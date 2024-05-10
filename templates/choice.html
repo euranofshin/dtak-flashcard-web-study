@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<body>
+    <div class="container">
+        <h1>Would you like to continue or end this study?</h1>
+        <button id="end">End</button>
+        <button id="continue">Continue</button>
+    </div>
+
+    <script>
+        // Function to navigate to the next page
+        function endPage() {
+            window.location.href = "/end"; // Change "next_page.html" to the URL of your next page
+        }
+
+        function continuePage() {
+            window.location.href = "/review";
+        }
+    
+        // Event listener for button click
+        document.getElementById("end").addEventListener("click", endPage);
+        document.getElementById("continue").addEventListener("click", continuePage);
+    </script>    
+</body>
+
+

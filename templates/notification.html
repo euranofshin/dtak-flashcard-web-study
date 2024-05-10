@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Word Display</title>
+</head>
+<body>
+
+<p id="randomWord"></p>
+
+<div class="container">
+    <button id="nextButton">Submit</button>
+</div>
+
+<p>This page has been visited <span id="visitCount">0</span> times.</p>
+<script>
+
+function displayRandomWord() {
+  var words = ["notif 1", "notif 2"]; // Array of words
+  
+  // Generate a random number between 0 and the length of the words array
+  var randomNumber = Math.floor(Math.random() * words.length);
+  
+  // Display the random word
+  document.getElementById("randomWord").innerHTML = words[randomNumber];
+}
+
+// Function to navigate to the next page
+function goToNextPage() {
+    if (localStorage.getItem("visitCount") > 4) {
+        window.location.href = "/choice";
+    }
+    else {
+        window.location.href = "/review"; // Change "next_page.html" to the URL of your next page
+    }
+}
+
+// Event listener for button click
+document.getElementById("nextButton").addEventListener("click", goToNextPage);
+
+function updateVisitCount() {
+  var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
+  count = count ? parseInt(count) : 0; // If count is null, initialize it to 0
+  
+  count++; // Increment the visit count
+  
+  localStorage.setItem("visitCount", count); // Store the updated count in local storage
+  
+  document.getElementById("visitCount").textContent = count; // Display the visit count
+}
+
+// Call updateVisitCount() when the page loads
+window.onload = function() {
+  updateVisitCount();
+  displayRandomWord();
+};
+</script>
+
+</body>
+</html>
+
