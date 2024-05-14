@@ -45,3 +45,6 @@ def choice():
 @app.route("/end")
 def end(): 
     return render_template("end.html")
+
+if __name__ == '__main__':
+    app.run(debug=True)
