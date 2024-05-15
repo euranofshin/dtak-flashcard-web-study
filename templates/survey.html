@@ -15,10 +15,11 @@
         <form action="/review" method="post">
             How burdensome? How many sessions away does it feel? Enter answer as 2 numbers, separated by a comma.
             <label for="answer">Your answer:</label><br>
-            <input type="text" id="answer" name="data" required><br>
+            <input type="text" id="answer" name="data" pattern="^\d+,\d+$" required><br>
             <button type="submit">Submit</button>
         </form>
     </div>
+    
 
     <script>
         // Function to navigate to the next page
