@@ -12,7 +12,7 @@ if credentials_json:
     credentials_dict = json.loads(credentials_json)
     credential = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict, ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive'])
     client = gspread.authorize(credential)
-    sheet = client.open_by_key("1UfYOsQOB-fyR81VWoaicpUZHkmGjfBwn4K-iBo0")
+    sheet = client.open_by_key("1UfYOsQONhRGB-fyR81VWoaicpUZHkmGjfBwn4K-iBo0")
     worksheet = sheet.get_worksheet(0)
 else:
     raise ValueError("GOOGLE_CREDENTIALS environment variable is not set")
