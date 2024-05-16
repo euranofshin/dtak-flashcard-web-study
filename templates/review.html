@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <h1>Review your flashcards for 3 minutes.</h1>
@@ -11,11 +11,12 @@
 <script>
 // Set the time delay in milliseconds
 // change to 3 minutes later 
-const delayInMilliseconds = 180000; // 3 seconds
+const delayInMilliseconds = 180000; // 3 minutes
 
 // Function to redirect
 function redirect() {
-  window.location.href = "/quiz"; // URL of the page you want to redirect to
+  const userName = new URLSearchParams(window.location.search).get('user_name');
+  window.location.href = `/quiz?user_name=${userName}`; // URL of the page you want to redirect to
 }
 
 // Set timeout to trigger redirect function after the delay

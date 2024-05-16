@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!--
-        <form action="/review" method="post">
-            <input type="hidden" name="data" value="Hello, World!">
-            <button type="submit">Send Information</button>
-        </form>
-        -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        input, button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
 <body>
     <div class="container">
-        <form action="/review" method="post">
+        <form action="/survey?user_name={{ user_name }}" method="post">
             How burdensome? How many sessions away does it feel? Enter answer as 2 numbers, separated by a comma.
             <label for="answer">Your answer:</label><br>
             <input type="text" id="answer" name="data" pattern="^\d+,\s*\d+$" placeholder="Burden Level, Sessions Away" style="width:200px" required><br>
+            <input type="hidden" name="user_name" value="{{ user_name }}">
             <button type="submit">Submit</button>
         </form>
     </div>
-    
-
-    <script>
-        // Function to navigate to the next page
-        function goToNextPage() {
-            window.location.href = "/review"; // Change "next_page.html" to the URL of your next page
-        }
-    
-        // Event listener for button click
-        //document.getElementById("nextButton").addEventListener("click", goToNextPage);
-    </script>    
 </body>
-
-
+</html>

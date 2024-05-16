@@ -1,62 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Random Word Display</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Word Display</title>
 </head>
 <body>
 
 <p id="randomWord"></p>
 
 <div class="container">
-    <button id="nextButton">Submit</button>
+    <form id="notificationForm" method="POST" action="/notification?user_name={{ user_name }}">
+        <input type="hidden" id="selectedWord" name="selected_word" value="">
+        <input type="hidden" id="userName" name="user_name" value="{{ user_name }}">
+        <input type="hidden" id="visitCount" name="visitCount" value="">
+        <button type="submit" id="nextButton">Submit</button>
+    </form>
 </div>
 
-<p>This page has been visited <span id="visitCount">0</span> times.</p>
+<p style="display: none">This page has been visited <span id="visitCountDisplay">0</span> times.</p>
 <script>
-
 function displayRandomWord() {
-  var words = ["The next session is just a few minutes long! You can spare some time to review some flashcards before moving on with your day!", "Take a look at the stack of flashcards! Remember how thick it was at the beginning?"]; // Array of words
-  
-  // Generate a random number between 0 and the length of the words array
-  var randomNumber = Math.floor(Math.random() * words.length);
-  
-  // Display the random word
-  document.getElementById("randomWord").innerHTML = words[randomNumber];
+    var words = [
+        "The next session is just a few minutes long! You can spare some time to review some flashcards before moving on with your day!", 
+        "Take a look at the stack of flashcards! Remember how thick it was at the beginning?"
+    ];
+    // Generate a random number between 0 and the length of the words array
+    var randomNumber = Math.floor(Math.random() * words.length);
+    
+    // Display the random word
+    var randomWord = words[randomNumber];
+    document.getElementById("randomWord").innerHTML = randomWord;
+    document.getElementById("selectedWord").value = randomWord; // Set the value of the hidden input
 }
-
-// Function to navigate to the next page
-function goToNextPage() {
-    if (localStorage.getItem("visitCount") > 4) {
-        window.location.href = "/choice";
-    }
-    else {
-        window.location.href = "/survey"; // Change "next_page.html" to the URL of your next page
-    }
-}
-
-// Event listener for button click
-document.getElementById("nextButton").addEventListener("click", goToNextPage);
 
 function updateVisitCount() {
-  var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
-  count = count ? parseInt(count) : 0; // If count is null, initialize it to 0
-  
-  count++; // Increment the visit count
-  
-  localStorage.setItem("visitCount", count); // Store the updated count in local storage
-  
-  document.getElementById("visitCount").textContent = count; // Display the visit count
+    var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
+    count = count ? parseInt(count) : 0; // If count is null, initialize it to 0
+    
+    count++; // Increment the visit count
+    
+    localStorage.setItem("visitCount", count); // Store the updated count in local storage
+    
+    document.getElementById("visitCountDisplay").textContent = count; // Display the visit count
+    document.getElementById("visitCount").value = count; // Set the value of the hidden input
 }
 
 // Call updateVisitCount() when the page loads
 window.onload = function() {
-  updateVisitCount();
-  displayRandomWord();
+    updateVisitCount();
+    displayRandomWord();
 };
+
+// Event listener for button click
+document.getElementById("nextButton").addEventListener("click", function() {
+    document.getElementById("notificationForm").submit();
+});
 </script>
 
 </body>
 </html>
-

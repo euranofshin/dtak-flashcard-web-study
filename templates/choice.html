@@ -1,30 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choice</title>
+</head>
 <body>
     <div class="container">
-        <h1>Would you like to continue or end this study?</h1>
-        <button id="end">End</button>
-        <button id="continue">Continue</button>
+        <form action="/choice?user_name={{ user_name }}" method="post">
+            <p>Would you like to continue or end the study?</p>
+            <input type="hidden" name="user_name" value="{{ user_name }}">
+            <button type="submit" name="choice" value="continue">Continue</button>
+            <button type="submit" name="choice" value="end">End</button>
+        </form>
     </div>
-
-    <script>
-        // Function to navigate to the next page
-        function endPage() {
-            window.location.href = "/end"; // Change "next_page.html" to the URL of your next page
-        }
-
-        function continuePage() {
-            window.location.href = "/review";
-        }
-    
-        // Event listener for button click
-        document.getElementById("end").addEventListener("click", endPage);
-        document.getElementById("continue").addEventListener("click", continuePage);
-    </script>    
 </body>
-
-
+</html>
