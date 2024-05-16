@@ -5,6 +5,12 @@ import gspread
 
 app = Flask(__name__)
 
+# Write the credentials.json content from environment variable to a file
+credentials_json = os.environ.get("GOOGLE_CREDENTIALS")
+if credentials_json:
+    with open("credentials.json", "w") as file:
+        file.write(credentials_json)
+
 credential = ServiceAccountCredentials.from_json_keyfile_name("credentials.json",['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive'])
 client = gspread.authorize(credential)
 sheet = client.open_by_key("1UfYOsQONhRGB-fyR81VWoaicpUZHkmGjfBwn4K-iBo0")
@@ -46,5 +52,6 @@ def choice():
 def end(): 
     return render_template("end.html")
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)

@@ -15,7 +15,7 @@
         <form action="/review" method="post">
             How burdensome? How many sessions away does it feel? Enter answer as 2 numbers, separated by a comma.
             <label for="answer">Your answer:</label><br>
-            <input type="text" id="answer" name="data" pattern="^\d+,\d+$" placeholder="Burden Level, Sessions Away" style="width:200px" required><br>
+            <input type="text" id="answer" name="data" pattern="^\d+,\s*\d+$" placeholder="Burden Level, Sessions Away" style="width:200px" required><br>
             <button type="submit">Submit</button>
         </form>
     </div>
