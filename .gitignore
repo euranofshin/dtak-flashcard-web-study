@@ -2,3 +2,4 @@ credentials.json
 .vercel
 .env
 *.swp
+.env*.local
