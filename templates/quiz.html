@@ -30,7 +30,8 @@
     <script>
     // Set the time delay in milliseconds
     // change to 3 minutes later
-    const delayInMilliseconds = 3 * 60 * 1000; // 3 minutes
+    //const delayInMilliseconds = 3 * 60 * 1000; // 3 minutes
+    const delayInMilliseconds = 4000; // 3 minutes
     var seconds_remaining = delayInMilliseconds / 1000;
 
     function quiz_time_over() {
@@ -65,7 +66,7 @@
     <h2 class="timer-line" id="seconds">1</h2>
     </div>
     <p id="text">This page will change colors when your time is up, and you can continue to the next page.</p>
-    <form action="/notification?user_name={{ user_name }}" method="post">
+    <form action="/quiz?user_name={{ user_name }}" method="post">
         <button type="submit" id="continue">Next page</button>
     </form>
     
