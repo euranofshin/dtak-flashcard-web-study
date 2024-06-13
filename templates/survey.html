@@ -18,13 +18,29 @@
             margin-top: 10px;
             cursor: pointer;
         }
+
+        #question{
+            width:50%;
+            margin: 0 auto;
+            text-align:left;
+        }
+
+        
     </style>
 </head>
 <body>
     <div class="container">
         <form action="/survey?user_name={{ user_name }}" method="post">
-            How burdensome? How many sessions away does it feel? Enter answer as 2 numbers, separated by a comma.
-            <label for="answer">Your answer:</label><br>
+            <div id="question">
+            <p>Please answer the following questions:
+            <ol>
+              <li>How burdensome does choosing to stay for one more session feel, on a scale from 1 to 10? </li>
+              <li>How many sessions away do you feel like the goal is? </li>
+            </ol> 
+            </p>
+            <br>
+            </div>
+            <label for="answer">Enter your answer as two numbers, separated by a comma.</label><br>
             <input type="text" id="answer" name="data" pattern="^\d+,\s*\d+$" placeholder="Burden Level, Sessions Away" style="width:300px" required><br>
             <input type="hidden" name="user_name" value="{{ user_name }}">
             <button type="submit">Submit</button>

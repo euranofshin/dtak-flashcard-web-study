@@ -4,22 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Word Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        input, button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-
-<p id="randomWord"></p>
+<h1>Please take a look at the notification below.</h1>
+<img id = "img" src="" alt="Notification" width=300>
 
 <div class="container">
     <form id="notificationForm" method="POST" action="/notification?user_name={{ user_name }}">
         <input type="hidden" id="selectedWord" name="selected_word" value="">
         <input type="hidden" id="userName" name="user_name" value="{{ user_name }}">
         <input type="hidden" id="visitCount" name="visitCount" value="">
-        <button type="submit" id="nextButton">Submit</button>
+        <button type="submit" id="nextButton">I've looked at the notification.</button>
     </form>
 </div>
 
 <p style="display: none">This page has been visited <span id="visitCountDisplay">0</span> times.</p>
 <script>
+/*
 function displayRandomWord() {
     var words = [
         "The next session is just a few minutes long! You can spare some time to review some flashcards before moving on with your day!", 
@@ -32,6 +45,15 @@ function displayRandomWord() {
     var randomWord = words[randomNumber];
     document.getElementById("randomWord").innerHTML = randomWord;
     document.getElementById("selectedWord").value = randomWord; // Set the value of the hidden input
+}
+   */
+
+// for beta testing, not randomized
+function displayRandomWord() {
+    var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
+    var randomNumber = count % 4 + 1; 
+    document.getElementById("img").src = "img/notification-" + randomNumber + ".png";
+    document.getElementById("selectedWord").value = randomNumber; // Set the value of the hidden input
 }
 
 function updateVisitCount() {

@@ -9,18 +9,21 @@ app = Flask(__name__)
 
 # Load environment variables from .env file
 # load_dotenv()
+os.environ["GOOGLE_CREDENTIALS"]="credentials.json"
+
 
 # Read the credentials from the environment variable
 credentials_json = os.getenv("GOOGLE_CREDENTIALS")
 if credentials_json:
-    credentials_dict = json.loads(credentials_json)
-    credential = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict, ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive'])
-    client = gspread.authorize(credential)
-    try:
-        sheet = client.open_by_key("1UfYOsQONhRGB-fyR81VWoaicpUZHkmGjfBwn4K-iBo0")
-    except gspread.SpreadsheetNotFound:
-        print("Spreadsheet not found. Check if the key is correct and the sheet is shared with the service account.")
-        raise
+    with open(credentials_json, 'r') as j: 
+        credentials_dict = json.loads(j.read())
+        credential = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict, ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive'])
+        client = gspread.authorize(credential)
+        try:
+            sheet = client.open_by_key("1UfYOsQONhRGB-fyR81VWoaicpUZHkmGjfBwn4K-iBo0")
+        except gspread.SpreadsheetNotFound:
+            print("Spreadsheet not found. Check if the key is correct and the sheet is shared with the service account.")
+            raise
 else:
     raise ValueError("GOOGLE_CREDENTIALS environment variable is not set")
 

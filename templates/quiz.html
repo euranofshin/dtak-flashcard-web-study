@@ -3,25 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        input, button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            margin: 0 auto;
+        }
+        #continue {
+            display:none; 
+        }
+        .timer-line {
+            display:inline;
+        }
+    </style>
 </head>
-<body>
-<h1>Quiz yourself for 3 minutes, setting aside the flashcards you got correct.</h1>
-<p>This page will redirect you to another page in 3 minutes.</p>
+<body onload="update_timer()">
+    <script>
+    // Set the time delay in milliseconds
+    // change to 3 minutes later
+    const delayInMilliseconds = 3 * 60 * 1000; // 3 minutes
+    var seconds_remaining = delayInMilliseconds / 1000;
 
-<script>
-// Set the time delay in milliseconds
-// change to 3 minutes later 
-const delayInMilliseconds = 180000; // 3 minutes
+    function quiz_time_over() {
+        clearInterval(interval_id);
+        document.getElementById("prompt").innerHTML = "Time's up!";
+        document.getElementById("text").innerHTML = "Please click the button below to get to the next page.";
+        document.getElementById("continue").style.display = 'block';
+        document.getElementById("timer").style.display = 'none';
+        document.body.style.background = "#ff6257";
 
-// Function to redirect
-function redirect() {
-  const userName = new URLSearchParams(window.location.search).get('user_name');
-  window.location.href = `/notification?user_name=${userName}`; // URL of the page you want to redirect to
-}
+    }
 
-// Set timeout to trigger redirect function after the delay
-setTimeout(redirect, delayInMilliseconds);
-</script>
+    function update_timer() {
+        seconds_remaining -= 1; 
+        var local_minutes = Math.floor(seconds_remaining / 60);
+        var local_seconds = seconds_remaining % 60;
+        document.getElementById("minutes").innerHTML = local_minutes;
+        document.getElementById("seconds").innerHTML = local_seconds;
+    }
+
+    // Set timeout to trigger redirect function after the delay
+    setTimeout(quiz_time_over, delayInMilliseconds);
+    var interval_id = setInterval(update_timer, 1000);
+    //setTimeout(redirect, delayInMilliseconds);
+    </script>
+
+    <h1 id="prompt">Quiz yourself for 3 minutes, setting aside the flashcards you got correct.</h1>
+    <div id="timer">
+    <h2 class="timer-line">Time remaining: </h2>
+    <h2 class="timer-line" id="minutes">1</h2>
+    <h2 class="timer-line">: </h2>
+    <h2 class="timer-line" id="seconds">1</h2>
+    </div>
+    <p id="text">This page will change colors when your time is up, and you can continue to the next page.</p>
+    <form action="/notification?user_name={{ user_name }}" method="post">
+        <button type="submit" id="continue">Next page</button>
+    </form>
+    
 
 </body>
 </html>
