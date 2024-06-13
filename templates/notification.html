@@ -52,7 +52,10 @@ function displayRandomWord() {
 function displayRandomWord() {
     var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
     var randomNumber = count % 4 + 1; 
-    document.getElementById("img").src = "img/notification-" + randomNumber + ".png";
+    var filename = "/static/images/notification-" + randomNumber +".png";
+    //document.getElementById("img").src = {{url_for('static', filename=filename)}} ;
+    document.getElementById("img").src = filename ;
+        //"/templates/img/notification-" + randomNumber + ".png";
     document.getElementById("selectedWord").value = randomNumber; // Set the value of the hidden input
 }
 
