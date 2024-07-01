@@ -25,12 +25,10 @@
     <form id="notificationForm" method="POST" action="/notification?user_name={{ user_name }}">
         <input type="hidden" id="selectedWord" name="selected_word" value="">
         <input type="hidden" id="userName" name="user_name" value="{{ user_name }}">
-        <input type="hidden" id="visitCount" name="visitCount" value="">
         <button type="submit" id="nextButton">I've looked at the notification.</button>
     </form>
 </div>
 
-<p style="display: none">This page has been visited <span id="visitCountDisplay">0</span> times.</p>
 <script>
 /*
 function displayRandomWord() {
@@ -51,7 +49,14 @@ function displayRandomWord() {
 // for beta testing, not randomized
 function displayRandomWord() {
     var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
-    var randomNumber = count % 4 + 1; 
+    var randomNumber = 1;
+    console.log(count); 
+    if(count < 8) {
+        var randomNumber = count; 
+    }
+    else {
+        var randomNumber = Math.floor(Math.random() * 7) + 1;
+    }
     var filename = "/static/images/notification-" + randomNumber +".png";
     //document.getElementById("img").src = {{url_for('static', filename=filename)}} ;
     document.getElementById("img").src = filename ;
@@ -59,21 +64,10 @@ function displayRandomWord() {
     document.getElementById("selectedWord").value = randomNumber; // Set the value of the hidden input
 }
 
-function updateVisitCount() {
-    var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
-    count = count ? parseInt(count) : 0; // If count is null, initialize it to 0
-    
-    count++; // Increment the visit count
-    
-    localStorage.setItem("visitCount", count); // Store the updated count in local storage
-    
-    document.getElementById("visitCountDisplay").textContent = count; // Display the visit count
-    document.getElementById("visitCount").value = count; // Set the value of the hidden input
-}
 
 // Call updateVisitCount() when the page loads
 window.onload = function() {
-    updateVisitCount();
+//    updateVisitCount();
     displayRandomWord();
 };
 

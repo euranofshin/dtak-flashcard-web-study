@@ -18,33 +18,232 @@
             margin-top: 10px;
             cursor: pointer;
         }
+        .likert {
+            margin-right:3px;
+        }
 
         #question{
-            width:50%;
+            width:70%;
             margin: 0 auto;
             text-align:left;
         }
 
-        
     </style>
 </head>
 <body>
-    <div class="container">
+
+<p style="display: none">This page has been visited <span id="visitCountDisplay">0</span> times.</p>
+    <div class="container" id = "question">
+       <p>Please answer the following questions.</p>
         <form action="/survey?user_name={{ user_name }}" method="post">
-            <div id="question">
-            <p>Please answer the following questions:
-            <ol>
-              <li>How burdensome does choosing to stay for one more session feel, on a scale from 1 to 10? </li>
-              <li>How many sessions away do you feel like the goal is? </li>
-            </ol> 
-            </p>
+            <input type="hidden" id="visitCount" name="visitCount" value="">
+            <p><i>It is burdensome for me to stay for another session.</i></p>
+            <label class="radio-inline likert" >
+                <input type="radio" name="burden-negative" value="-3" required>
+                Strongly disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="burden-negative" value="-2">
+                Disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="burden-negative" value="-1">
+                Somewhat disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="burden-negative" value="0">
+                Neutral
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="burden-negative" value="1">
+                Somewhat agree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="burden-negative" value="2">
+                Agree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="burden-negative" value="3">
+                Strongly agree
+            </label>
             <br>
-            </div>
-            <label for="answer">Enter your answer as two numbers, separated by a comma.</label><br>
-            <input type="text" id="answer" name="data" pattern="^\d+,\s*\d+$" placeholder="Burden Level, Sessions Away" style="width:300px" required><br>
-            <input type="hidden" name="user_name" value="{{ user_name }}">
+            <br>
+             
+            <p><i>It is easy for me to stay for another session.</i></p>
+            <label class="radio-inline likert" >
+                <input type="radio" name="burden-positive" value="-3" required>
+                Strongly disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="burden-positive" value="-2">
+                Disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="burden-positive" value="-1">
+                Somewhat disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="burden-positive" value="0">
+                Neutral
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="burden-positive" value="1">
+                Somewhat agree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="burden-positive" value="2">
+                Agree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="burden-positive" value="3">
+                Strongly agree
+            </label>
+            <br>
+            <br>
+            
+            <p><i>I would feel bad about ending the study right now.</i></p>
+            <label class="radio-inline likert" >
+                <input type="radio" name="quitting-negative" value="-3" required>
+                Strongly disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="quitting-negative" value="-2">
+                Disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="quitting-negative" value="-1">
+                Somewhat disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="quitting-negative" value="0">
+                Neutral
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="quitting-negative" value="1">
+                Somewhat agree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="quitting-negative" value="2">
+                Agree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="quitting-negative" value="3">
+                Strongly agree
+            </label>
+            <br>
+            <br>
+            
+            <p><i>I would be okay with ending the study right now.</i></p>
+            <label class="radio-inline likert" >
+                <input type="radio" name="quitting-positive" value="-3" required>
+                Strongly disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="quitting-positive" value="-2">
+                Disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="quitting-positive" value="-1">
+                Somewhat disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="quitting-positive" value="0">
+                Neutral
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="quitting-positive" value="1">
+                Somewhat agree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="quitting-positive" value="2">
+                Agree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="quitting-positive" value="3">
+                Strongly agree
+            </label>
+            <br>
+            <br>
+            
+            <p><i>Three sessions from now feels far away.</i></p>
+            <label class="radio-inline likert" >
+                <input type="radio" name="discount-negative" value="-3" required>
+                Strongly disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="discount-negative" value="-2">
+                Disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="discount-negative" value="-1">
+                Somewhat disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="discount-negative" value="0">
+                Neutral
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="discount-negative" value="1">
+                Somewhat agree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="discount-negative" value="2">
+                Agree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="discount-negative" value="3">
+                Strongly agree
+            </label>
+            <br>
+            <br>
+            
+            <p><i>Three sessions from now feels close.</i></p>
+            <label class="radio-inline likert" >
+                <input type="radio" name="discount-positive" value="-3" required>
+                Strongly disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="discount-positive" value="-2">
+                Disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="discount-positive" value="-1">
+                Somewhat disagree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="discount-positive" value="0">
+                Neutral
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="discount-positive" value="1">
+                Somewhat agree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="discount-positive" value="2">
+                Agree
+            </label>
+            <label class="radio-inline likert">
+                <input type="radio" name="discount-positive" value="3">
+                Strongly agree
+            </label>
+
+
+
+            <br> 
+            <br> 
             <button type="submit">Submit</button>
         </form>
     </div>
 </body>
+<script>
+function setVisitCount() {
+    var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
+    document.getElementById("visitCount").value = count; // Set the value of the hidden input
+}
+
+window.onload = function() {
+    setVisitCount();
+};
+</script>
+
 </html>

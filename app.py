@@ -48,7 +48,7 @@ def create_sheet():
             # Add the user's name in the first row
             new_sheet.append_row([user_name])
             print(f"Created new sheet for {user_name}")
-        return redirect(url_for('survey', user_name=user_name))
+        return redirect(url_for('review', user_name=user_name))
     except Exception as e:
         print(f"Error creating new sheet for {user_name}: {e}")
         return "Internal Server Error", 500
@@ -57,11 +57,21 @@ def create_sheet():
 def survey():
     user_name = request.args.get("user_name")
     if request.method == "POST":
-        data = request.form.get("data")
+        burden_neg = request.form.get("burden-negative")
+        burden_pos = request.form.get("burden-positive")
+        quitting_neg = request.form.get("quitting-negative")
+        quitting_pos = request.form.get("quitting-positive")
+        discount_neg = request.form.get("discount-negative")
+        discount_pos = request.form.get("discount-positive")
+        visit_count = int(request.form.get("visitCount", 0))
         try:
             user_sheet = sheet.worksheet(user_name)
-            user_sheet.append_row([data])
-            return redirect(url_for('review', user_name=user_name))
+            user_sheet.append_row([burden_neg, burden_pos, quitting_pos, quitting_neg, discount_pos, discount_neg])
+            if visit_count > 2:
+                return redirect(url_for('choice', user_name=user_name))
+            else:
+                return redirect(url_for('review', user_name=user_name))
+            #return redirect(url_for('review', user_name=user_name))
         except Exception as e:
             print(f"Error in /survey route: {e}")
             return "Internal Server Error", 500
@@ -86,14 +96,10 @@ def notification():
     user_name = request.args.get("user_name")
     if request.method == "POST":
         selected_word = request.form.get("selected_word")
-        visit_count = int(request.form.get("visitCount", 0))
         try:
             user_sheet = sheet.worksheet(user_name)
             user_sheet.append_row([selected_word])
-            if visit_count > 4:
-                return redirect(url_for('choice', user_name=user_name))
-            else:
-                return redirect(url_for('survey', user_name=user_name))
+            return redirect(url_for('survey', user_name=user_name))
         except Exception as e:
             print(f"Error in /notification route: {e}")
             return "Internal Server Error", 500
@@ -106,7 +112,7 @@ def choice():
         if request.form.get("choice") == "end":
             return redirect(url_for('end', user_name=user_name))
         else:
-            return redirect(url_for('survey', user_name=user_name))
+            return redirect(url_for('review', user_name=user_name))
     return render_template("choice.html", user_name=user_name)
 
 @app.route("/end")

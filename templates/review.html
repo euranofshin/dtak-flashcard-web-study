@@ -30,8 +30,8 @@
     <script>
     // Set the time delay in milliseconds
     // change to 3 minutes later
-    //const delayInMilliseconds = 3 * 60 * 1000; // 3 minutes
-    const delayInMilliseconds = 4000; // 3 minutes
+    const delayInMilliseconds = 3 * 60 * 1000; // 3 minutes
+    //const delayInMilliseconds = 4000; // 3 minutes
     var seconds_remaining = delayInMilliseconds / 1000;
 
     function quiz_time_over() {
@@ -55,7 +55,16 @@
     // Set timeout to trigger redirect function after the delay
     setTimeout(quiz_time_over, delayInMilliseconds);
     var interval_id = setInterval(update_timer, 1000);
+    updateVisitCount();
     //setTimeout(redirect, delayInMilliseconds);
+    
+    function updateVisitCount() {
+        var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
+        count = count ? parseInt(count) : 0; // If count is null, initialize it to 0
+        count++; // Increment the visit count
+        localStorage.setItem("visitCount", count); // Store the updated count in local storage
+    }
+
     </script>
 
     <h1 id="prompt">Review the flashcards in your "unlearned" pile for 3 minutes.</h1>
