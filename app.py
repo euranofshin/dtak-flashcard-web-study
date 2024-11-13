@@ -49,7 +49,9 @@ def create_sheet():
             # Labels
             new_sheet.append_row(["Burden", "Discount", "Flashcards learned", "Intervention shown"])
             print(f"Created new sheet for {user_name}")
-        return redirect(url_for('consent', user_name=user_name))
+            return redirect(url_for('consent', user_name=user_name))
+        else: 
+            return redirect(url_for('entry', user_name = user_name))
     except Exception as e:
         print(f"Error creating new sheet for {user_name}: {e}")
         return "Internal Server Error", 500
@@ -103,7 +105,13 @@ def review():
 def quiz():
     user_name = request.args.get("user_name")
     if request.method == "POST":
-        return redirect(url_for('notification', user_name=user_name))
+        remaining = int(request.form.get("remaining"))
+        if remaining <= 0:
+            ws = sheet.worksheet(user_name)
+            ws.append_row([None, None, "Finished!", None])
+            return redirect(url_for('goal', user_name = user_name))
+        else: 
+            return redirect(url_for('notification', user_name=user_name))
     return render_template("quiz.html", user_name=user_name)
 
 @app.route("/notification", methods=["GET", "POST"])
@@ -114,6 +122,7 @@ def notification():
         discount_neg = request.form.get("discount-negative")
         flashcards_learned = int(request.form.get("learned", 0))
         intervention_shown = request.form.get("intervention_shown")
+        print(intervention_shown)
         try:
             user_sheet = sheet.worksheet(user_name)
             user_sheet.append_row([burden_neg, discount_neg, flashcards_learned, intervention_shown])
@@ -126,6 +135,7 @@ def notification():
             return redirect(url_for('end', user_name=user_name))
         else:
             return redirect(url_for('review', user_name=user_name))
+
     return render_template("notification.html", user_name=user_name)
 
 @app.route("/end")
@@ -133,6 +143,10 @@ def end():
     user_name = request.args.get("user_name")
     return render_template("end.html", user_name=user_name)
 
+@app.route("/goal")
+def goal():
+    user_name = request.args.get("user_name")
+    return render_template("goal.html", user_name=user_name)
 
 
 

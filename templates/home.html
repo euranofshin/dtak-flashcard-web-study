@@ -7,9 +7,13 @@
     <title>Flashcard Study</title>
 </head>
 <body>
+    <script>
+        localStorage.setItem("visitCount", 0);
+        localStorage.setItem("learned", []);
+    </script>
     <div class="container">
         <h1>Welcome to our study!</h1>
-        <p>Choose a username. This <i>does not</i> have to be your real name. It is just a way for you to re-enter if you leave the study.</p>
+        <p>Choose a username. This <i>does not</i> have to be your real name.</p>
         <form id="nameForm" method="POST" action="/create_sheet">
             <input type="text" id="userName" name="userName" placeholder="Enter your name" required>
             <br>

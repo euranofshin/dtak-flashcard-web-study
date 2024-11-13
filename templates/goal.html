@@ -1,0 +1,34 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="static/utils.js"></script>
+    <link rel="stylesheet" href="static/main.css">
+    <title>Flashcard Study</title>
+</head>
+<body>
+    <script>
+    // Call updateVisitCount() when the page loads
+    window.onload = function() {
+        set_progress_bar(); 
+    };
+    </script>
+
+    <div class="container">
+        <h1>CONGRATS! You've finished learning all 100 words!</h1>
+       
+    <h3 class="progress-label">Progress:</h3>
+    <h3 class="progress-label" id="num_learned"></h3>
+    <h3 class="progress-label">/</h3>
+    <h3 class="progress-label" id="num_total"></h3>
+    <h3 class="progress-label"> words learned</h3>
+    <div class="progress-container">
+      <div class="progress-bar" id="progress_bar" style="width: 0%;"></div>
+    </div>
+
+        
+        <p>Thank you for taking part in our study! Please show the proctor this screen to receive the exit survey.</h1>
+    </div>
+
+</body>
+</html>

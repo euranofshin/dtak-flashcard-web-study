@@ -21,10 +21,9 @@ function set_progress_bar() {
     var total = JSON.parse(localStorage.getItem("fronts")).length;
     var learned = localStorage.getItem("learned");
     learned = learned ? JSON.parse(learned) : []; // If none, set empty
-    console.log(learned);
     var count = learned.length;
-    document.getElementById("progress_bar").value = count; 
-    document.getElementById("progress_bar").max = total; 
+    document.getElementById("progress_bar").style.width = parseInt(count / total * 100) + "%"; 
+    //document.getElementById("progress_bar").max = total; 
     document.getElementById("num_learned").innerHTML = count;
     document.getElementById("num_total").innerHTML = total;
 }

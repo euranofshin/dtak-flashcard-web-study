@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/main.css">
     <script type="text/javascript" src="static/utils.js"></script>
+    <title>Flashcard Study</title>
     <style>
         #continue {
             display:none; 
@@ -40,15 +41,19 @@
         var seconds_remaining = delayInMilliseconds / 1000;
         function quiz_time_over() {
             clearInterval(interval_id);
-            document.getElementById("prompt").innerHTML = "Quiz time over!";
-            document.getElementById("text").innerHTML = "";
             document.getElementById("continue").style.display = 'block';
             document.getElementById("timer").style.display = 'none';
             document.getElementById("study").style.display = 'none';
+            document.getElementById("prompt").innerHTML = "Quiz time over!";
+            document.getElementById("text").innerHTML = "";
             document.body.style.background = "#ff6257";
             learned = [... new Set(learned)];
             console.log(learned);
             localStorage.setItem("learned", JSON.stringify(learned)); 
+            
+            var count = learned.length;
+            var total = JSON.parse(localStorage.getItem("fronts")).length;
+            document.getElementById("remaining").value = total - count;
         }
 
         function update_timer() {
@@ -110,7 +115,10 @@
         
         function right() {
             learned.push(unlearned[flashcard_index]);
-            document.getElementById("progress_bar").value = learned.length; 
+            var count = learned.length;
+            var total = JSON.parse(localStorage.getItem("fronts")).length;
+            console.log(count, total);
+            document.getElementById("progress_bar").style.width = parseInt(count / total * 100) + "%"; 
             document.getElementById("num_learned").innerHTML = learned.length;
             next();
         }
@@ -129,18 +137,17 @@
             // initialize to first word
             document.getElementById("front").innerHTML = flashcard_fronts[0];
             document.getElementById("back").innerHTML = flashcard_backs[0];
-
         }
 
     </script>
-    
-    <div id="progress" style="width:100%;">
-        <h3 class="line">Flashcards learned:</h3>
-        <h3 class="line" id="num_learned">32</h3>
-        <h3 class="line">/</h3>
-        <h3 class="line" id="num_total">100</h3>
-        <progress class="line" id="progress_bar" value="32" max="100" style="width:65%;"/>
-    </div> 
+    <h3 class="progress-label">Progress:</h3>
+    <h3 class="progress-label" id="num_learned"></h3>
+    <h3 class="progress-label">/</h3>
+    <h3 class="progress-label" id="num_total"></h3>
+    <h3 class="progress-label"> words learned</h3>
+    <div class="progress-container">
+      <div class="progress-bar" id="progress_bar" style="width: 0%;"></div>
+    </div>
 
     <h1 id="prompt">Quiz yourself on as many flashcards as you can for 3 minutes.</h1>
     <div id="timer">
@@ -169,6 +176,7 @@
     </div>
 
     <form action="/quiz?user_name={{ user_name }}" method="post">
+        <input type="hidden" id="remaining" name="remaining" value="">
         <button type="submit" id="continue" >Next page</button>
     </form>
 </body>

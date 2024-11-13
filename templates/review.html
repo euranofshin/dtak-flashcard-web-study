@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="static/utils.js"></script>
     <link rel="stylesheet" href="static/main.css">
+    <title>Flashcard Study</title>
     <style>
         #continue {
             display:none; 
@@ -148,13 +149,16 @@
         }
 
     </script>
-    <div id="progress" style="width:100%;">
-        <h3 class="line">Flashcards learned:</h3>
-        <h3 class="line" id="num_learned">32</h3>
-        <h3 class="line">/</h3>
-        <h3 class="line" id="num_total">100</h3>
-        <progress class="line" id="progress_bar" value="32" max="100" style="width:65%;"/>
-    </div> 
+    
+
+    <h3 class="progress-label">Progress:</h3>
+    <h3 class="progress-label" id="num_learned"></h3>
+    <h3 class="progress-label">/</h3>
+    <h3 class="progress-label" id="num_total"></h3>
+    <h3 class="progress-label"> words learned</h3>
+    <div class="progress-container">
+      <div class="progress-bar" id="progress_bar" style="width: 0%;"></div>
+    </div>
 
     <h1 id="prompt">Review your unlearned flashcards for 3 minutes.</h1>
     <div id="timer">

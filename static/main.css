@@ -1,7 +1,36 @@
-.line {
-    display:inline;
+/* Progress bar container */
+.progress-container {
+  width: 70%;
+  margin-left:15%;
+  background-color: #e0e0e0;
+  border-radius: 25px;
+  padding: 3px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
+/* Progress bar fill */
+.progress-bar {
+  height: 20px;
+  background: linear-gradient(90deg, #4CAF50, #81C784); /* Gradient effect */
+  border-radius: 20px;
+  width: 0;
+  transition: width 0.4s ease; /* Smooth fill animation */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Progress label */
+.progress-label {
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  margin-top: 10px;
+  display:inline;
+}
+
+.line {
+display:inline;
+}
 .container {
     margin-top: 100px;
 }
