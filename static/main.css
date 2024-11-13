@@ -1,0 +1,22 @@
+.line {
+    display:inline;
+}
+
+.container {
+    margin-top: 100px;
+}
+
+.study-button {
+    margin-left:20px; 
+    margin-right:20px;
+}
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+input, button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+}

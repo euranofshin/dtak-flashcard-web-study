@@ -3,28 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/main.css">
+    <script type="text/javascript" src="static/utils.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        .container {
-            margin-top: 100px;
-        }
-        input, button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-top: 10px;
-            cursor: pointer;
-            margin: 0 auto;
-        }
         #continue {
             display:none; 
+            margin: 0 auto; 
         }
-        .line {
-            display:inline;
-        }
-
+        
         #flashcard {
             width: 60%; 
             height: 55%; 
@@ -54,12 +40,15 @@
         var seconds_remaining = delayInMilliseconds / 1000;
         function quiz_time_over() {
             clearInterval(interval_id);
-            document.getElementById("prompt").innerHTML = "Time's up!";
-            document.getElementById("text").innerHTML = "Please click the button below to get to the next page.";
+            document.getElementById("prompt").innerHTML = "Quiz time over!";
+            document.getElementById("text").innerHTML = "";
             document.getElementById("continue").style.display = 'block';
             document.getElementById("timer").style.display = 'none';
             document.getElementById("study").style.display = 'none';
             document.body.style.background = "#ff6257";
+            learned = [... new Set(learned)];
+            console.log(learned);
+            localStorage.setItem("learned", JSON.stringify(learned)); 
         }
 
         function update_timer() {
@@ -76,10 +65,14 @@
         //setTimeout(redirect, delayInMilliseconds);
 
 
-        // Manage what word is shown
-        var word_index = 0;
-        const flashcard_fronts = ["a", "b", "c", "d", "e"];
-        const flashcard_backs = ["1", "2", "3", "4", "5"];
+        // Manage words
+        var flashcard_index = 0;
+        flashcards = get_flashcards();
+        const flashcard_fronts = flashcards['fronts']; 
+        const flashcard_backs = flashcards['backs'];
+        const unlearned = flashcards['indices'];
+        var learned = localStorage.getItem("learned");
+        learned = learned ? JSON.parse(learned) : []; // If none, set empty
 
         function flip() {
           var front = document.getElementById("front");
@@ -93,23 +86,63 @@
             back.style.display = "block";
           }
         }
-        
-        function foward() {
 
+        function update_flashcard() {
+            document.getElementById("flashcard_index").innerHTML = flashcard_index + 1; 
+            document.getElementById("front").innerHTML = flashcard_fronts[flashcard_index];
+            document.getElementById("back").innerHTML = flashcard_backs[flashcard_index];
+            front.innerHTML = flashcard_fronts[flashcard_index];
+            back.innerHTML = flashcard_backs[flashcard_index];
+            front.style.display = "block";
+            back.style.display = "none";
+        }
+        
+        function next() {
+            if(flashcard_index < flashcard_fronts.length - 1) {
+                flashcard_index +=1;
+                update_flashcard();
+            }
+            else { // Reached the end
+               quiz_time_over();  
+            }
+        }
+        
+        
+        function right() {
+            learned.push(unlearned[flashcard_index]);
+            document.getElementById("progress_bar").value = learned.length; 
+            document.getElementById("num_learned").innerHTML = learned.length;
+            next();
         }
         
         function prepare_page() {
             update_timer(); 
+            
+            set_progress_bar(); 
+            // shuffle the words?
 
             // set counter
             var total_words = flashcard_fronts.length;
             document.getElementById("flashcard_index").innerHTML = "1";
             document.getElementById("num_flashcards").innerHTML = total_words;
+
+            // initialize to first word
+            document.getElementById("front").innerHTML = flashcard_fronts[0];
+            document.getElementById("back").innerHTML = flashcard_backs[0];
+
         }
 
     </script>
+    
+    <div id="progress" style="width:100%;">
+        <h3 class="line">Flashcards learned:</h3>
+        <h3 class="line" id="num_learned">32</h3>
+        <h3 class="line">/</h3>
+        <h3 class="line" id="num_total">100</h3>
+        <progress class="line" id="progress_bar" value="32" max="100" style="width:65%;"/>
+    </div> 
 
-    <h1 id="prompt">Quiz yourself for 3 minutes, setting aside the flashcards you got correct.</h1>
+    <h1 id="prompt">Quiz yourself on as many flashcards as you can for 3 minutes.</h1>
     <div id="timer">
     <h2 class="line">Time remaining: </h2>
     <h2 class="line" id="minutes">1</h2>
@@ -125,21 +158,18 @@
         <h2 class="line" id="flashcard_index">0</h2>
         <h2 class="line">/</h2>
         <h2 class="line" id="num_flashcards">10</h2>
-
         <div id = "flashcard" onclick = "flip()">
             <h1 id = "front">word</h1>
-            <h1 id = "back" style = "display:none">other word</h1>
+            <h1 id = "back" style = "display:none; color:blue;">other word</h1>
         </div>
-        <div style = "width:100%;  display:flex; gap:10px; margin-top:30px;">
-            <button class = "study-button">Back</button>
-            <button class = "study-button">Next</button>
+        <div style = "width:100%;  margin:0 auto;">
+            <button class = "study-button" onclick="next()">I was wrong</button>
+            <button class = "study-button" onclick="right()">I was right</button>
         </div>
     </div>
 
     <form action="/quiz?user_name={{ user_name }}" method="post">
-        <button type="submit" id="continue">Next page</button>
+        <button type="submit" id="continue" >Next page</button>
     </form>
-    
-
 </body>
 </html>

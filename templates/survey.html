@@ -1,23 +1,10 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey</title>
+    <link rel="stylesheet" href="static/main.css">
+    <title>Flashcard Study</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        .container {
-            margin-top: 100px;
-        }
-        input, button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
         .likert {
             margin-right:3px;
         }
@@ -27,223 +14,335 @@
             margin: 0 auto;
             text-align:left;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            font-weight: bold;
+        }
+        td:first-child {
+            font-weight: bold;
+            text-align: left;
+        }
 
     </style>
 </head>
 <body>
+    <div style = "padding-left:20%; width:60%; text-align:left;">
+        <h1>Entrance Survey</h1>
+        <p>This is the first half of the mandatory section of the study. It will ask you questions about your experience learning Chinese and some questions to gauge how you think about long-term rewards.</p>
+        <p>The exit survey (the second part of the study) will be delivered one hour from now.</p>
+        <form id="nameForm" method="POST" action="/survey?user_name={{user_name}}">
+            <h2>Prior language experience</h2>
+            <div class = "question-group">
+                <p><i>How many languages are you fluent in?</i></p>
+                <label><input type="radio" name="skill-1" value="1" required>1</label><br>
+                <label><input type="radio" name="skill-1" value="2">2</label><br>
+                <label><input type="radio" name="skill-1" value="3">3</label><br>
+                <label><input type="radio" name="skill-1" value="4">4</label><br>
+                <label><input type="radio" name="skill-1" value="5"> 5+</label>
+        
+                <p><i>How many languages have you learned to the level of fluency (as opposed to...)?</i></p>
+                <label><input type="radio" name="skill-2" value="1" required> 1</label><br>
+                <label><input type="radio" name="skill-2" value="2"> 2</label><br>
+                <label><input type="radio" name="skill-2" value="3"> 3</label><br>
+                <label><input type="radio" name="skill-2" value="4"> 4</label><br>
+                <label><input type="radio" name="skill-2" value="5"> 5+</label><br>
 
-<p style="display: none">This page has been visited <span id="visitCountDisplay">0</span> times.</p>
-    <div class="container" id = "question">
-       <p>Please answer the following questions.</p>
-        <form action="/survey?user_name={{ user_name }}" method="post">
-            <input type="hidden" id="visitCount" name="visitCount" value="">
-            <p><i>It is burdensome for me to stay for another session.</i></p>
-            <label class="radio-inline likert" >
-                <input type="radio" name="burden-negative" value="-3" required>
-                Strongly disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="burden-negative" value="-2">
-                Disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="burden-negative" value="-1">
-                Somewhat disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="burden-negative" value="0">
-                Neutral
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="burden-negative" value="1">
-                Somewhat agree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="burden-negative" value="2">
-                Agree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="burden-negative" value="3">
-                Strongly agree
-            </label>
-            <br>
-            <br>
-             
-            <p><i>It is easy for me to stay for another session.</i></p>
-            <label class="radio-inline likert" >
-                <input type="radio" name="burden-positive" value="-3" required>
-                Strongly disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="burden-positive" value="-2">
-                Disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="burden-positive" value="-1">
-                Somewhat disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="burden-positive" value="0">
-                Neutral
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="burden-positive" value="1">
-                Somewhat agree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="burden-positive" value="2">
-                Agree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="burden-positive" value="3">
-                Strongly agree
-            </label>
-            <br>
-            <br>
-            
-            <p><i>I would feel bad about ending the study right now.</i></p>
-            <label class="radio-inline likert" >
-                <input type="radio" name="quitting-negative" value="-3" required>
-                Strongly disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="quitting-negative" value="-2">
-                Disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="quitting-negative" value="-1">
-                Somewhat disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="quitting-negative" value="0">
-                Neutral
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="quitting-negative" value="1">
-                Somewhat agree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="quitting-negative" value="2">
-                Agree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="quitting-negative" value="3">
-                Strongly agree
-            </label>
-            <br>
-            <br>
-            
-            <p><i>I would be okay with ending the study right now.</i></p>
-            <label class="radio-inline likert" >
-                <input type="radio" name="quitting-positive" value="-3" required>
-                Strongly disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="quitting-positive" value="-2">
-                Disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="quitting-positive" value="-1">
-                Somewhat disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="quitting-positive" value="0">
-                Neutral
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="quitting-positive" value="1">
-                Somewhat agree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="quitting-positive" value="2">
-                Agree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="quitting-positive" value="3">
-                Strongly agree
-            </label>
-            <br>
-            <br>
-            
-            <p><i>Three sessions from now feels far away.</i></p>
-            <label class="radio-inline likert" >
-                <input type="radio" name="discount-negative" value="-3" required>
-                Strongly disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="discount-negative" value="-2">
-                Disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="discount-negative" value="-1">
-                Somewhat disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="discount-negative" value="0">
-                Neutral
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="discount-negative" value="1">
-                Somewhat agree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="discount-negative" value="2">
-                Agree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="discount-negative" value="3">
-                Strongly agree
-            </label>
-            <br>
-            <br>
-            
-            <p><i>Three sessions from now feels close.</i></p>
-            <label class="radio-inline likert" >
-                <input type="radio" name="discount-positive" value="-3" required>
-                Strongly disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="discount-positive" value="-2">
-                Disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="discount-positive" value="-1">
-                Somewhat disagree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="discount-positive" value="0">
-                Neutral
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="discount-positive" value="1">
-                Somewhat agree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="discount-positive" value="2">
-                Agree
-            </label>
-            <label class="radio-inline likert">
-                <input type="radio" name="discount-positive" value="3">
-                Strongly agree
-            </label>
+                <!-- Question 3 -->
+                <p><i>What is your level of fluency with Chinese?</i></p>
+                <label><input type="radio" name="skill-3" value="2" required> Native Speaker</label><br>
+                <label><input type="radio" name="skill-3" value="1" required> Advanced (Fluent in reading, writing, and speaking)</label><br>
+                <label><input type="radio" name="skill-3" value="0" required> Intermediate (Conversational ability, can read and write basic texts)</label><br>
+                <label><input type="radio" name="skill-3" value="-1" required> Beginner (Basic phrases and simple reading/writing skills)</label><br>
+                <label><input type="radio" name="skill-3" value="-2" required> No Proficiency (No knowledge of Chinese)</label><br>
+
+                <!-- Question 4 -->
+                <p><i>(Optional) Are you currently enrolled in Chinese Ba or Bx?</i></p>
+                <label><input type="radio" name="skill-4" value="yes"> Yes</label><br>
+                <label><input type="radio" name="skill-4" value="no"> No</label><br>
+
+                <!-- Question 5 -->
+                <p><i>(Optional) If you are currently enrolled in Chinese Ba or Bx, what do you anticipate will be your grade?</i></p>
+                <label><input type="radio" name="skill-5" value="4"> A- / A</label><br>
+                <label><input type="radio" name="skill-5" value="3"> B- / B / B+</label><br>
+                <label><input type="radio" name="skill-5" value="2"> C- / C/ C+</label><br>
+                <label><input type="radio" name="skill-5" value="1"> Below D</label><br>
+
+            </div>
 
 
+            <h2>Barrett Scale</h2>
+            <p>Rate the frequency of each statement.</p>
+            <div class="question-group">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Rarely/Never</th>
+                    <th>Occasionally</th>
+                    <th>Often</th>
+                    <th>Almost Always</th>
+                </tr>
+                <tr>
+                    <td>I plan tasks carefully.</td>
+                    <td><input type="radio" name="impulsiveness-1" value="4" required></td>
+                    <td><input type="radio" name="impulsiveness-1" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-1" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-1" value="1"></td>
+                </tr>
+                <tr>
+                    <td>I do things without thinking.</td>
+                    <td><input type="radio" name="impulsiveness-2" value="1" required></td>
+                    <td><input type="radio" name="impulsiveness-2" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-2" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-2" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I make-up my mind quickly.</td>
+                    <td><input type="radio" name="impulsiveness-3" value="1" required></td>
+                    <td><input type="radio" name="impulsiveness-3" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-3" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-3" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I am happy-go-lucky</td>
+                    <td><input type="radio" name="impulsiveness-4" value="1" required></td>
+                    <td><input type="radio" name="impulsiveness-4" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-4" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-4" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I don't "pay attention."</td>
+                    <td><input type="radio" name="impulsiveness-5" value="1" required></td>
+                    <td><input type="radio" name="impulsiveness-5" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-5" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-5" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I have "racing" thoughts.</td>
+                    <td><input type="radio" name="impulsiveness-6" value="1" required></td>
+                    <td><input type="radio" name="impulsiveness-6" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-6" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-6" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I plan trips well ahead of time.</td>
+                    <td><input type="radio" name="impulsiveness-7" value="4" required></td>
+                    <td><input type="radio" name="impulsiveness-7" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-7" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-7" value="1"></td>
+                </tr>
+                <tr>
+                    <td>I am self-controlled.</td>
+                    <td><input type="radio" name="impulsiveness-8" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-8" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-8" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-8" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I concentrate easily.</td>
+                    <td><input type="radio" name="impulsiveness-9" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-9" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-9" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-9" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I save regularly.</td>
+                    <td><input type="radio" name="impulsiveness-10" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-10" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-10" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-10" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I "squirm" at plays or lectures.</td>
+                    <td><input type="radio" name="impulsiveness-11" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-11" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-11" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-11" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I am a careful thinker.</td>
+                    <td><input type="radio" name="impulsiveness-12" value="4"></td>
+                    <td><input type="radio" name="impulsiveness-12" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-12" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-12" value="1"></td>
+                </tr>
+                <tr>
+                    <td>I plan for job security.</td>
+                    <td><input type="radio" name="impulsiveness-13" value="4"></td>
+                    <td><input type="radio" name="impulsiveness-13" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-13" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-13" value="1"></td>
+                </tr>
+                <tr>
+                    <td>I say things without thinking.</td>
+                    <td><input type="radio" name="impulsiveness-14" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-14" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-14" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-14" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I like to think about complex problems.</td>
+                    <td><input type="radio" name="impulsiveness-15" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-15" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-15" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-15" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I change jobs.</td>
+                    <td><input type="radio" name="impulsiveness-16" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-16" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-16" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-16" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I act "on impulse."</td>
+                    <td><input type="radio" name="impulsiveness-17" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-17" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-17" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-17" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I get easily bored when solving thought problems.</td>
+                    <td><input type="radio" name="impulsiveness-18" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-18" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-18" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-18" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I act on spur of the moment.</td>
+                    <td><input type="radio" name="impulsiveness-19" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-19" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-19" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-19" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I am a steady thinker.</td>
+                    <td><input type="radio" name="impulsiveness-20" value="4"></td>
+                    <td><input type="radio" name="impulsiveness-20" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-20" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-20" value="1"></td>
+                </tr>
+                <tr>
+                    <td>I change residences.</td>
+                    <td><input type="radio" name="impulsiveness-21" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-21" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-21" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-21" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I buy things on impulse.</td>
+                    <td><input type="radio" name="impulsiveness-22" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-22" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-22" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-22" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I can only think about one thing at a time.</td>
+                    <td><input type="radio" name="impulsiveness-23" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-23" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-23" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-23" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I change hobbies.</td>
+                    <td><input type="radio" name="impulsiveness-24" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-24" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-24" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-24" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I spend or charge more than I earn.</td>
+                    <td><input type="radio" name="impulsiveness-25" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-25" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-25" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-25" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I often have extraneous thoughts when thinking.</td>
+                    <td><input type="radio" name="impulsiveness-26" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-26" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-26" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-26" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I am more interested in the present than the future.</td>
+                    <td><input type="radio" name="impulsiveness-27" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-27" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-27" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-27" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I am restless at the theater or lectures.</td>
+                    <td><input type="radio" name="impulsiveness-28" value="1"></td>
+                    <td><input type="radio" name="impulsiveness-28" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-28" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-28" value="4"></td>
+                </tr>
+                <tr>
+                    <td>I like puzzles.</td>
+                    <td><input type="radio" name="impulsiveness-29" value="4"></td>
+                    <td><input type="radio" name="impulsiveness-29" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-29" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-29" value="1"></td>
+                </tr>
+                <tr>
+                    <td>I am future oriented.</td>
+                    <td><input type="radio" name="impulsiveness-30" value="4"></td>
+                    <td><input type="radio" name="impulsiveness-30" value="3"></td>
+                    <td><input type="radio" name="impulsiveness-30" value="2"></td>
+                    <td><input type="radio" name="impulsiveness-30" value="1"></td>
+                </tr>
+            </table>
+        </div>
+        <h2>Monetary Choice Questionnaire</h2>
+        <div class="question-group">
+                <p><i>Would you rather have $54 today or $55 in 117 days?</i></p>
+                <label><input type="radio" name="mcq-1" value="0" required>$54 today</label><br>
+                <label><input type="radio" name="mcq-1" value="1">$55 in 117 days</label><br>
+                
+                <p><i>Would you rather have $47 today or $50 in 160 days?</i></p>
+                <label><input type="radio" name="mcq-2" value="0" required>$47 today</label><br>
+                <label><input type="radio" name="mcq-2" value="1">$50 in 160 days</label><br>
+                 
+                <p><i>Would you rather have $25 today or $60 in 14 days?</i></p>
+                <label><input type="radio" name="mcq-3" value="0" required>$25 today</label><br>
+                <label><input type="radio" name="mcq-3" value="1"></label>$60 in 14 days<br>
 
-            <br> 
-            <br> 
-            <button type="submit">Submit</button>
-        </form>
+                <p><i>Would you rather have $40 today or $55 in 62 days?</i></p>
+                <label><input type="radio" name="mcq-4" value="0" required>$40 today</label><br>
+                <label><input type="radio" name="mcq-4" value="1">$55 in 62 days</label><br>
+
+                <p><i>Would you rather have $27 today or $50 in 21 days?</i></p>
+                <label><input type="radio" name="mcq-5" value="0" required>$27 today</label><br>
+                <label><input type="radio" name="mcq-5" value="1"></label>$50 in 21 days<br>
+
+                <p><i>Would you rather have $49 today or $60 in 89 days?</i></p>
+                <label><input type="radio" name="mcq-6" value="0" required>$49 today</label><br>
+                <label><input type="radio" name="mcq-6" value="1"></label>$60 in 89 days<br>
+
+                <p><i>Would you rather have $34 today or $50 in 30 days?</i></p>
+                <label><input type="radio" name="mcq-7" value="0" required>$34 today</label><br>
+                <label><input type="radio" name="mcq-7" value="1">$50 in 30 days</label><br>
+
+                <p><i>Would you rather have $54 today or $60 in 111 days?</i></p>
+                <label><input type="radio" name="mcq-8" value="0" required>$54 today</label><br>
+                <label><input type="radio" name="mcq-8" value="1"></label>$60 in 111 days<br>
+
+                <p><i>Would you rather have $20 today or $55 in 7 days?</i></p>
+                <label><input type="radio" name="mcq-9" value="0" required>$20 today</label><br>
+                <label><input type="radio" name="mcq-9" value="1"></label>$55 in 7 days<br>
+        </div>
+         <!-- Submit Button -->
+        <button type="submit" style="margin-top: 20px; padding: 10px 20px;">Submit</button>
     </div>
+
 </body>
-<script>
-function setVisitCount() {
-    var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
-    document.getElementById("visitCount").value = count; // Set the value of the hidden input
-}
-
-window.onload = function() {
-    setVisitCount();
-};
-</script>
-
 </html>

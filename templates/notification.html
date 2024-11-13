@@ -3,79 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="static/utils.js"></script>
+    <link rel="stylesheet" href="static/main.css">
     <title>Random Word Display</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+        .likert {
+            margin-right:3px;
         }
-        input, button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-top: 10px;
-            cursor: pointer;
+
+        #question{
+            width:70%;
+            margin: 0 auto;
+            text-align:left;
         }
+
     </style>
 </head>
 <body>
-<h1>Please take a look at the notification below.</h1>
-<img id = "img" src="" alt="Notification" width=300>
+<script>
+    const burden_notifications = Array(15).fill("Burden");
+    const discount_notifications = Array(15).fill("Discounting"); 
+    const no_notifications =Array(15).fill("Nothing"); 
+    const notifications = [no_notifications, burden_notifications, discount_notifications];
+    
 
-<div class="container">
+    function displayRandomWord() {
+        var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
+        var notification_order = localStorage.getItem("notification_order");
+        var intervention = localStorage.getItem("intervention");
+        var randomNumber = 1;
+        if(count < notification_order.length) {
+            var randomNumber = notification_order[count]; 
+        }
+        else {
+            var randomNumber = Math.floor(Math.random() * 14) + 1;
+        }
+
+        const message = notifications[intervention][randomNumber];
+        document.getElementById("message").innerHTML = message;
+        document.getElementById("intervention_shown").value = message; // Set the value of the hidden input
+        document.getElementById("learned").value = JSON.parse(localStorage.getItem("learned")).length;
+    }
+
+
+    // Call updateVisitCount() when the page loads
+    window.onload = function() {
+        displayRandomWord();
+        set_progress_bar(); 
+    };
+
+    // Event listener for button click
+    document.getElementById("nextButton").addEventListener("click", function() {
+        document.getElementById("notificationForm").submit();
+    });
+</script>
+
+<div id="progress" style="width:100%;">
+    <h3 class="line">Flashcards learned:</h3>
+    <h3 class="line" id="num_learned">32</h3>
+    <h3 class="line">/</h3>
+    <h3 class="line" id="num_total">100</h3>
+    <progress class="line" id="progress_bar" value="32" max="100" style="width:65%;"/>
+</div>
+<h1 id="message"></h1>
+
+<div style="text-align:left; padding-left:20%; width:60%; ">
+    <h2>Please answer the following questions.</h2>
     <form id="notificationForm" method="POST" action="/notification?user_name={{ user_name }}">
-        <input type="hidden" id="selectedWord" name="selected_word" value="">
-        <input type="hidden" id="userName" name="user_name" value="{{ user_name }}">
-        <button type="submit" id="nextButton">I've looked at the notification.</button>
-    </form>
+         <input type="hidden" id="intervention_shown" name="intervention_shown" value="">
+         <input type="hidden" id="learned" name="learned" value="">
+         <input type="hidden" id="userName" name="user_name" value="{{ user_name }}">
+
+         <input type="hidden" id="visitCount" name="visitCount" value="">
+         <input type="hidden" id="learned" name="learned" value="">
+         
+         <p><i>It is burdensome for me to stay for another session.</i></p>
+         <label class="radio-inline likert" >
+             <input type="radio" name="burden-negative" value="-3" required>
+             Strongly disagree
+         </label>
+         <label class="radio-inline likert">
+             <input type="radio" name="burden-negative" value="-2">
+             Disagree
+         </label>
+         <label class="radio-inline likert">
+             <input type="radio" name="burden-negative" value="-1">
+             Somewhat disagree
+         </label>
+         <label class="radio-inline likert">
+             <input type="radio" name="burden-negative" value="0">
+             Neutral
+         </label>
+         <label class="radio-inline likert">
+             <input type="radio" name="burden-negative" value="1">
+             Somewhat agree
+         </label>
+         <label class="radio-inline likert">
+             <input type="radio" name="burden-negative" value="2">
+             Agree
+         </label>
+         <label class="radio-inline likert">
+             <input type="radio" name="burden-negative" value="3">
+             Strongly agree
+         </label>
+         <br>
+         <br>
+         
+         <p><i>Three sessions from now feels far away.</i></p>
+         <label class="radio-inline likert" >
+             <input type="radio" name="discount-negative" value="-3" required>
+             Strongly disagree
+         </label>
+         <label class="radio-inline likert">
+             <input type="radio" name="discount-negative" value="-2">
+             Disagree
+         </label>
+         <label class="radio-inline likert">
+             <input type="radio" name="discount-negative" value="-1">
+             Somewhat disagree
+         </label>
+         <label class="radio-inline likert">
+             <input type="radio" name="discount-negative" value="0">
+             Neutral
+         </label>
+         <label class="radio-inline likert">
+             <input type="radio" name="discount-negative" value="1">
+             Somewhat agree
+         </label>
+         <label class="radio-inline likert">
+             <input type="radio" name="discount-negative" value="2">
+             Agree
+         </label>
+         <label class="radio-inline likert">
+             <input type="radio" name="discount-negative" value="3">
+             Strongly agree
+         </label>
+         <br>
+         <br>
+         
+         <h2>Would you like to end or continue the study?</h2>
+         <button type="submit" name="choice" value="end">End</button>
+         <button type="submit" name="choice" value="continue">Continue</button>
+     </form>
 </div>
 
-<script>
-/*
-function displayRandomWord() {
-    var words = [
-        "The next session is just a few minutes long! You can spare some time to review some flashcards before moving on with your day!", 
-        "Take a look at the stack of flashcards! Remember how thick it was at the beginning?"
-    ];
-    // Generate a random number between 0 and the length of the words array
-    var randomNumber = Math.floor(Math.random() * words.length);
-    
-    // Display the random word
-    var randomWord = words[randomNumber];
-    document.getElementById("randomWord").innerHTML = randomWord;
-    document.getElementById("selectedWord").value = randomWord; // Set the value of the hidden input
-}
-   */
-
-// for beta testing, not randomized
-function displayRandomWord() {
-    var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
-    var randomNumber = 1;
-    console.log(count); 
-    if(count < 8) {
-        var randomNumber = count; 
-    }
-    else {
-        var randomNumber = Math.floor(Math.random() * 7) + 1;
-    }
-    var filename = "/static/images/notification-" + randomNumber +".png";
-    //document.getElementById("img").src = {{url_for('static', filename=filename)}} ;
-    document.getElementById("img").src = filename ;
-        //"/templates/img/notification-" + randomNumber + ".png";
-    document.getElementById("selectedWord").value = randomNumber; // Set the value of the hidden input
-}
-
-
-// Call updateVisitCount() when the page loads
-window.onload = function() {
-//    updateVisitCount();
-    displayRandomWord();
-};
-
-// Event listener for button click
-document.getElementById("nextButton").addEventListener("click", function() {
-    document.getElementById("notificationForm").submit();
-});
-</script>
 
 </body>
 </html>

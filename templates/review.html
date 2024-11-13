@@ -3,82 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="static/utils.js"></script>
+    <link rel="stylesheet" href="static/main.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        .container {
-            margin-top: 100px;
-        }
-        input, button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-top: 10px;
-            cursor: pointer;
-            margin: 0 auto;
-        }
         #continue {
             display:none; 
+            margin: 0 auto; 
         }
-        .timer-line {
-            display:inline;
+
+        #flashcard {
+            width: 60%; 
+            height: 55%; 
+            outline: 3px solid black;
+            margin:0 auto;
+            background-color: white; 
+            justify-content: center;
+            display:flex;
+            align-items: center;
+            cursor: pointer; 
+        }
+
+        #study {
+            width: 50%; 
+            height: 600px;
+            background-color: lightgrey; 
+            margin:0 auto;
+            padding: 30px; 
         }
     </style>
 </head>
-<body onload="update_timer()">
+<body onload="prepare_page()">
     <script>
-    // Set the time delay in milliseconds
-    // change to 3 minutes later
-    const delayInMilliseconds = 3 * 60 * 1000; // 3 minutes
-    //const delayInMilliseconds = 4000; // 3 minutes
-    var seconds_remaining = delayInMilliseconds / 1000;
+        // Set the time delay in milliseconds
+        // change to 3 minutes later
+        const delayInMilliseconds = 0.2 * 60 * 1000; // 3 minutes
+        //const delayInMilliseconds = 4000; // 3 minutes
+        var seconds_remaining = delayInMilliseconds / 1000;
 
-    function quiz_time_over() {
-        clearInterval(interval_id);
-        document.getElementById("prompt").innerHTML = "Time's up!";
-        document.getElementById("text").innerHTML = "Please click the button below to get to the next page.";
-        document.getElementById("continue").style.display = 'block';
-        document.getElementById("timer").style.display = 'none';
-        document.body.style.background = "#ff6257";
+        function quiz_time_over() {
+            clearInterval(interval_id);
+            document.getElementById("prompt").innerHTML = "Time's up!";
+            document.getElementById("text").innerHTML = "On the next page, you'll quiz yourself over the flashcards you've just learned.";
+            document.getElementById("continue").style.display = 'block';
+            document.getElementById("timer").style.display = 'none';
+            document.getElementById("study").style.display = 'none';
+            document.body.style.background = "#ff6257";
 
-    }
+        }
 
-    function update_timer() {
-        seconds_remaining -= 1; 
-        var local_minutes = Math.floor(seconds_remaining / 60);
-        var local_seconds = seconds_remaining % 60;
-        document.getElementById("minutes").innerHTML = local_minutes;
-        document.getElementById("seconds").innerHTML = local_seconds;
-    }
+        function update_timer() {
+            seconds_remaining -= 1; 
+            var local_minutes = Math.floor(seconds_remaining / 60);
+            var local_seconds = seconds_remaining % 60;
+            document.getElementById("minutes").innerHTML = local_minutes;
+            document.getElementById("seconds").innerHTML = local_seconds;
+        }
 
-    // Set timeout to trigger redirect function after the delay
-    setTimeout(quiz_time_over, delayInMilliseconds);
-    var interval_id = setInterval(update_timer, 1000);
-    updateVisitCount();
-    //setTimeout(redirect, delayInMilliseconds);
-    
-    function updateVisitCount() {
-        var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
-        count = count ? parseInt(count) : 0; // If count is null, initialize it to 0
-        count++; // Increment the visit count
-        localStorage.setItem("visitCount", count); // Store the updated count in local storage
-    }
+        // Set timeout to trigger redirect function after the delay
+        setTimeout(quiz_time_over, delayInMilliseconds);
+        var interval_id = setInterval(update_timer, 1000);
+        updateVisitCount();
+        //setTimeout(redirect, delayInMilliseconds);
+        
+        function updateVisitCount() {
+            var count = localStorage.getItem("visitCount"); // Get the visit count from local storage
+            count = count ? parseInt(count) : 0; // If count is null, initialize it to 0
+            count++; // Increment the visit count
+            localStorage.setItem("visitCount", count); // Store the updated count in local storage
+        }
+            
+        // Manage what word is shown
+        var flashcard_index = 0;
+        flashcards = get_flashcards();
+        const flashcard_fronts = flashcards['fronts']; 
+        const flashcard_backs = flashcards['backs'];
+
+        function flip() {
+          var front = document.getElementById("front");
+          var back = document.getElementById("back");
+          if (front.style.display === "none") {
+            front.style.display = "block";
+            back.style.display = "none";
+          } 
+          else {
+            front.style.display = "none";
+            back.style.display = "block";
+          }
+        }
+
+        function update_flashcard() {
+            document.getElementById("flashcard_index").innerHTML = flashcard_index + 1; 
+            var front = document.getElementById("front");
+            var back = document.getElementById("back")
+            front.innerHTML = flashcard_fronts[flashcard_index];
+            back.innerHTML = flashcard_backs[flashcard_index];
+            front.style.display = "block";
+            back.style.display = "none";
+        }
+        
+        function forward() {
+            if(flashcard_index < flashcard_fronts.length - 1) {
+                flashcard_index +=1;
+                update_flashcard();
+            }
+        }
+        
+        function backward() {
+            if(flashcard_index > 0) {
+                flashcard_index -=1;
+                update_flashcard();
+            }
+
+        }
+        
+        function increase_flashcards_learned() {
+            // Update count variable
+            var count = localStorage.getItem("num_learned"); // Get the visit count from local storage
+            count++; // Increment the visit count
+            localStorage.setItem("num_learned", count); // Store the updated count in local storage
+
+            // Update progress bar
+            document.getElementById("num_learned").innerHTML = count;
+            document.getElementById("progress_bar").value = count; 
+
+        }
+        
+        function prepare_page() {
+            update_timer(); 
+            
+            // Set progress bar
+            set_progress_bar(); 
+                  
+            // shuffle the words?
+
+            // set counter
+            var total_words = flashcard_fronts.length;
+            document.getElementById("flashcard_index").innerHTML = "1";
+            document.getElementById("num_flashcards").innerHTML = total_words;
+
+            // initialize to first word
+            document.getElementById("front").innerHTML = flashcard_fronts[0];
+            document.getElementById("back").innerHTML = flashcard_backs[0];
+
+        }
 
     </script>
+    <div id="progress" style="width:100%;">
+        <h3 class="line">Flashcards learned:</h3>
+        <h3 class="line" id="num_learned">32</h3>
+        <h3 class="line">/</h3>
+        <h3 class="line" id="num_total">100</h3>
+        <progress class="line" id="progress_bar" value="32" max="100" style="width:65%;"/>
+    </div> 
 
-    <h1 id="prompt">Review the flashcards in your "unlearned" pile for 3 minutes.</h1>
+    <h1 id="prompt">Review your unlearned flashcards for 3 minutes.</h1>
     <div id="timer">
-    <h2 class="timer-line">Time remaining: </h2>
-    <h2 class="timer-line" id="minutes">1</h2>
-    <h2 class="timer-line">: </h2>
-    <h2 class="timer-line" id="seconds">1</h2>
+        <h2 class="line">Time remaining: </h2>
+        <h2 class="line" id="minutes">1</h2>
+        <h2 class="line">: </h2>
+        <h2 class="line" id="seconds">1</h2>
     </div>
     <p id="text">This page will change colors when your time is up, and you can continue to the next page.</p>
+    <div id="study">
+        <p>Click the flashcard to flip it.</p>
+        
+        <h2 class="line">Showing flashcard:</h2>
+        <h2 class="line" id="flashcard_index">0</h2>
+        <h2 class="line">/</h2>
+        <h2 class="line" id="num_flashcards">10</h2>
+        <div id = "flashcard" onclick = "flip()">
+            <h1 id = "front">word</h1>
+            <h1 id = "back" style = "display:none; color:blue;">other word</h1>
+        </div>
+        <div style = "width:100%; margin: 0 auto; text-align:center;">
+            <button class = "study-button" onclick="backward()">Back</button>
+            <button class = "study-button" onclick="forward()">Next</button>
+        </div>
+    </div>
     <form action="/review?user_name={{ user_name }}" method="post">
         <button type="submit" id="continue">Next page</button>
     </form>
     
-
 </body>
 </html>

@@ -3,30 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="static/utils.js"></script>
+    <link rel="stylesheet" href="static/main.css">
     <title>Choice</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        .container {
-            margin-top: 100px;
-        }
-        input, button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
+    <script>
+        window.onload = function() {
+            set_progress_bar(); 
+        };
+    </script>
+    
+    <div id="progress" style="width:100%;">
+        <h3 class="line">Flashcards learned:</h3>
+        <h3 class="line" id="num_learned">32</h3>
+        <h3 class="line">/</h3>
+        <h3 class="line" id="num_total">100</h3>
+        <progress class="line" id="progress_bar" value="32" max="100" style="width:65%;"/>
+    </div>
     <div class="container">
         <form action="/choice?user_name={{ user_name }}" method="post">
             <h1>Would you like to continue or end the study?</h1>
             <input type="hidden" name="user_name" value="{{ user_name }}">
-            <button type="submit" name="choice" value="continue">Continue</button>
-            <button type="submit" name="choice" value="end">End</button>
         </form>
     </div>
 </body>
