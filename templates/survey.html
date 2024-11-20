@@ -6,7 +6,7 @@
     <title>Flashcard Study</title>
     <style>
         .likert {
-            margin-right:3px;
+            font-weight:normal;
         }
 
         #question{
@@ -32,24 +32,26 @@
             text-align: left;
         }
 
+
     </style>
 </head>
 <body>
     <div style = "padding-left:20%; width:60%; text-align:left;">
         <h1>Entrance Survey</h1>
-        <p>This is the first half of the mandatory section of the study. It will ask you questions about your experience learning Chinese and some questions to gauge how you think about long-term rewards.</p>
+        <p>This survey will ask you questions about your experience learning Chinese and some questions to gauge how you think about long-term rewards.</p>
         <p>The exit survey (the second part of the study) will be delivered one hour from now.</p>
         <form id="nameForm" method="POST" action="/survey?user_name={{user_name}}">
-            <h2>Prior language experience</h2>
+            <h2>Language Learning</h2>
+            <h3>Prior Experience</h3>
             <div class = "question-group">
-                <p><i>How many languages are you fluent in?</i></p>
+                <p>How many languages can you hold a conversation in?</p>
                 <label><input type="radio" name="skill-1" value="1" >1</label><br>
                 <label><input type="radio" name="skill-1" value="2">2</label><br>
                 <label><input type="radio" name="skill-1" value="3">3</label><br>
                 <label><input type="radio" name="skill-1" value="4">4</label><br>
                 <label><input type="radio" name="skill-1" value="5"> 5+</label>
         
-                <p><i>How many languages have you learned to the level of fluency (excluding those you grew up speaking)?</i></p>
+                <p>How many languages have you learned to the level of conversational ability (excluding those you grew up speaking, e.g. growing up bilingual does not count)?</p>
                 <label><input type="radio" name="skill-2" value="1" > 0</label><br>
                 <label><input type="radio" name="skill-2" value="1" > 1</label><br>
                 <label><input type="radio" name="skill-2" value="2"> 2</label><br>
@@ -58,7 +60,7 @@
                 <label><input type="radio" name="skill-2" value="5"> 5+</label><br>
 
                 <!-- Question 3 -->
-                <p><i>What is your level of fluency with Chinese?</i></p>
+                <p>What is your level of fluency with Chinese?</p>
                 <label><input type="radio" name="skill-3" value="2" > Native Speaker</label><br>
                 <label><input type="radio" name="skill-3" value="1" > Advanced (Fluent in reading, writing, and speaking)</label><br>
                 <label><input type="radio" name="skill-3" value="0" > Intermediate (Conversational ability, can read and write basic texts)</label><br>
@@ -66,21 +68,85 @@
                 <label><input type="radio" name="skill-3" value="-2" > No Proficiency (No knowledge of Chinese)</label><br>
 
                 <!-- Question 4 -->
-                <p><i>(Optional) Are you currently enrolled in Chinese Ba or Bx?</i></p>
+                <p>(Optional) Are you currently enrolled in Chinese Ba or Bx?</p>
                 <label><input type="radio" name="skill-4" value="yes"> Yes</label><br>
                 <label><input type="radio" name="skill-4" value="no"> No</label><br>
 
                 <!-- Question 5 -->
-                <p><i>(Optional) If you are currently enrolled in Chinese Ba or Bx, what do you anticipate will be your grade?</i></p>
-                <label><input type="radio" name="skill-5" value="4"> A- / A</label><br>
-                <label><input type="radio" name="skill-5" value="3"> B- / B / B+</label><br>
-                <label><input type="radio" name="skill-5" value="2"> C- / C/ C+</label><br>
-                <label><input type="radio" name="skill-5" value="1"> Below D</label><br>
+                <p>(Optional) If you are currently enrolled in Chinese Ba or Bx, how much do you agree with the following: "I find the course content more <b>difficult</b> than my other classes."</p>
+                <label><input type="radio" name="skill-5" value="-3"> Strongly disagree</label><br>
+                <label><input type="radio" name="skill-5" value="-2"> Disagree</label><br>
+                <label><input type="radio" name="skill-5" value="-1"> Somewhat disagree</label><br>
+                <label><input type="radio" name="skill-5" value="0">  Neither agree nor disagree</label><br>
+                <label><input type="radio" name="skill-5" value="1">  Somewhat agree</label><br>
+                <label><input type="radio" name="skill-5" value="2">  Agree </label><br>
+                <label><input type="radio" name="skill-5" value="3">  Strongly agree</label><br>
+                
+                <!-- Question 6 -->
+                <p>(Optional) If you are currently enrolled in Chinese Ba or Bx, how much do you agree with the following: "I find the course content more <b>time consuming</b> than my other classes."</p>
+                <label><input type="radio" name="skill-6" value="-3"> Strongly disagree</label><br>
+                <label><input type="radio" name="skill-6" value="-2"> Disagree</label><br>
+                <label><input type="radio" name="skill-6" value="-1"> Somewhat disagree</label><br>
+                <label><input type="radio" name="skill-6" value="0">  Neither agree nor disagree</label><br>
+                <label><input type="radio" name="skill-6" value="1">  Somewhat agree</label><br>
+                <label><input type="radio" name="skill-6" value="2">  Agree </label><br>
+                <label><input type="radio" name="skill-6" value="3">  Strongly agree</label><br>
 
             </div>
 
+            <h3>Perception</h3>
+            <p>For each of the below statements, please rate how much you agree or disagree.</p>
+            <div class="question-group">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Strongly disagree</th>
+                    <th>Disagree</th>
+                    <th>Somewhat disagree</th>
+                    <th>Neither agree nor disagree</th>
+                    <th>Somewhat agree</th>
+                    <th>Agree</th>
+                    <th>Strongly agree</th>
+                </tr>
+                <tr>
+                    <td>I feel happy and satisfied when I study Chinese.</td>
+                    <td><input type="radio" name="burden-1" value="-3" ></td>
+                    <td><input type="radio" name="burden-1" value="-2"></td>
+                    <td><input type="radio" name="burden-1" value="-1" ></td>
+                    <td><input type="radio" name="burden-1" value="0"></td>
+                    <td><input type="radio" name="burden-1" value="1"></td>
+                    <td><input type="radio" name="burden-1" value="2"></td>
+                    <td><input type="radio" name="burden-1" value="3"></td>
+                </tr>
+                <tr>
+                    <td>Flashcards are my preferred way to study vocabulary.</td>
+                    <td><input type="radio" name="burden-2" value="-3" ></td>
+                    <td><input type="radio" name="burden-2" value="-2"></td>
+                    <td><input type="radio" name="burden-2" value="-1" ></td>
+                    <td><input type="radio" name="burden-2" value="0"></td>
+                    <td><input type="radio" name="burden-2" value="1"></td>
+                    <td><input type="radio" name="burden-2" value="2"></td>
+                    <td><input type="radio" name="burden-2" value="3"></td>
+                </tr>
+                <tr>
+                    <td>This is a busy day.</td>
+                    <td><input type="radio" name="burden-3" value="-3" ></td>
+                    <td><input type="radio" name="burden-3" value="-2"></td>
+                    <td><input type="radio" name="burden-3" value="-1" ></td>
+                    <td><input type="radio" name="burden-3" value="0"></td>
+                    <td><input type="radio" name="burden-3" value="1"></td>
+                    <td><input type="radio" name="burden-3" value="2"></td>
+                    <td><input type="radio" name="burden-3" value="3"></td>
+                </tr>
+            </table>
+        </div>
 
-            <h2>Barrett Scale</h2>
+
+
+
+            <h2>Short vs. Long Term Rewards</h2>
+            <h3>Barrett Scale</h3>
+            <p>The below questions ask about you (and not your language learning).</p>
             <p>Rate the frequency of each statement.</p>
             <div class="question-group">
             <table>
@@ -303,41 +369,41 @@
                 </tr>
             </table>
         </div>
-        <h2>Monetary Choice Questionnaire</h2>
+        <h3>Monetary Choice Questionnaire</h3>
         <div class="question-group">
-                <p><i>Would you rather have $54 today or $55 in 117 days?</i></p>
+                <p>Would you rather have $54 today or $55 in 117 days?</p>
                 <label><input type="radio" name="mcq-1" value="0" >$54 today</label><br>
                 <label><input type="radio" name="mcq-1" value="1">$55 in 117 days</label><br>
                 
-                <p><i>Would you rather have $47 today or $50 in 160 days?</i></p>
+                <p>Would you rather have $47 today or $50 in 160 days?</p>
                 <label><input type="radio" name="mcq-2" value="0" >$47 today</label><br>
                 <label><input type="radio" name="mcq-2" value="1">$50 in 160 days</label><br>
                  
-                <p><i>Would you rather have $25 today or $60 in 14 days?</i></p>
+                <p>Would you rather have $25 today or $60 in 14 days?</p>
                 <label><input type="radio" name="mcq-3" value="0" >$25 today</label><br>
                 <label><input type="radio" name="mcq-3" value="1"></label>$60 in 14 days<br>
 
-                <p><i>Would you rather have $40 today or $55 in 62 days?</i></p>
+                <p>Would you rather have $40 today or $55 in 62 days?</p>
                 <label><input type="radio" name="mcq-4" value="0" >$40 today</label><br>
                 <label><input type="radio" name="mcq-4" value="1">$55 in 62 days</label><br>
 
-                <p><i>Would you rather have $27 today or $50 in 21 days?</i></p>
+                <p>Would you rather have $27 today or $50 in 21 days?</p>
                 <label><input type="radio" name="mcq-5" value="0" >$27 today</label><br>
                 <label><input type="radio" name="mcq-5" value="1"></label>$50 in 21 days<br>
 
-                <p><i>Would you rather have $49 today or $60 in 89 days?</i></p>
+                <p>Would you rather have $49 today or $60 in 89 days?</p>
                 <label><input type="radio" name="mcq-6" value="0" >$49 today</label><br>
                 <label><input type="radio" name="mcq-6" value="1"></label>$60 in 89 days<br>
 
-                <p><i>Would you rather have $34 today or $50 in 30 days?</i></p>
+                <p>Would you rather have $34 today or $50 in 30 days?</p>
                 <label><input type="radio" name="mcq-7" value="0" >$34 today</label><br>
                 <label><input type="radio" name="mcq-7" value="1">$50 in 30 days</label><br>
 
-                <p><i>Would you rather have $54 today or $60 in 111 days?</i></p>
+                <p>Would you rather have $54 today or $60 in 111 days?</p>
                 <label><input type="radio" name="mcq-8" value="0" >$54 today</label><br>
                 <label><input type="radio" name="mcq-8" value="1"></label>$60 in 111 days<br>
 
-                <p><i>Would you rather have $20 today or $55 in 7 days?</i></p>
+                <p>Would you rather have $20 today or $55 in 7 days?</p>
                 <label><input type="radio" name="mcq-9" value="0" >$20 today</label><br>
                 <label><input type="radio" name="mcq-9" value="1"></label>$55 in 7 days<br>
         </div>

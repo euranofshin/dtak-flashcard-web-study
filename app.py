@@ -5,6 +5,7 @@ import json
 from oauth2client.service_account import ServiceAccountCredentials
 import gspread
 import numpy as np
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -47,7 +48,20 @@ def create_sheet():
             # Create a new sheet with the user's name
             new_sheet = sheet.add_worksheet(title=user_name, rows="100", cols="20")
             # Labels
-            new_sheet.append_row(["Burden", "Discount", "Flashcards learned", "Intervention shown"])
+            new_sheet.append_row([
+                "burden",                      #A1 burden
+                "discount",                    #B1 discount
+                "intervention_shown",          #C1 intervention_shown
+                "total_flashcards_learned",    #D1 total_flashcards_learned
+                "flashcards_remaining",        #E1 flashcards_remaining
+                "training_flashcards_unique",  #F1 training_flashcards_unique
+                "training_flashcards_seen",    #G1 training_flashcards_seen
+                "training_flashcards_flipped", #H1 training_flashcards_flipped
+                "testing_flashcards_seen",     #I1 testing_flashcards_seen
+                "testing_flashcards_learned"   #J1 testing_flashcards_learned
+                "status"                       #K1 status
+                "timestamp"                    #L1 status
+                ])
             print(f"Created new sheet for {user_name}")
             return redirect(url_for('consent', user_name=user_name))
         else: 
@@ -89,6 +103,8 @@ def entry():
     if request.method == "POST":
         action = request.form.get('action')
         if action == "quit": 
+            ws = sheet.worksheet(user_name)
+            ws.append_row([None, None, "Quit!", None])
             return redirect(url_for("end", user_name = user_name))
         elif action == "participate":
             return redirect(url_for('review', user_name=user_name))
@@ -98,6 +114,21 @@ def entry():
 def review():
     user_name = request.args.get("user_name")
     if request.method == "POST":
+        ws = sheet.worksheet(user_name)
+        ws.append_row([
+                None, #A1 burden
+                None, #B1 discount
+                None, #C1 intervention_shown
+                None, #D1 total_flashcards_learned
+                None, #E1 flashcards_remaining
+                int(request.form.get("training_flashcards_unique")), #F1 training_flashcards_unique
+                int(request.form.get("training_flashcards_seen")), #G1 training_flashcards_seen
+                int(request.form.get("training_flashcards_flipped")), #H1 training_flashcards_flipped
+                None, #I1 testing_flashcards_seen
+                None, #J1 testing_flashcards_learned
+                None, #K1 status
+                None, #L1 timestamp
+            ])
         return redirect(url_for('quiz', user_name=user_name))
     return render_template("review.html", user_name=user_name)
 
@@ -106,9 +137,18 @@ def quiz():
     user_name = request.args.get("user_name")
     if request.method == "POST":
         remaining = int(request.form.get("remaining"))
+        
+        # Update worksheet
+        ws = sheet.worksheet(user_name)
+        row = len(ws.get_all_values()) 
+        print(row)
+        ws.update_acell(f"I{row}", request.form.get("testing_flashcards_seen"))
+        ws.update_acell(f"J{row}", request.form.get("testing_flashcards_learned"))
+        ws.update_acell(f"E{row}", request.form.get("remaining"))
+
+        # Redirect
         if remaining <= 0:
-            ws = sheet.worksheet(user_name)
-            ws.append_row([None, None, "Finished!", None])
+            ws.update_acell(f"K{row}", "complete")
             return redirect(url_for('goal', user_name = user_name))
         else: 
             return redirect(url_for('notification', user_name=user_name))
@@ -118,22 +158,22 @@ def quiz():
 def notification():
     user_name = request.args.get("user_name")
     if request.method == "POST":
-        burden_neg = request.form.get("burden-negative")
-        discount_neg = request.form.get("discount-negative")
-        flashcards_learned = int(request.form.get("learned", 0))
-        intervention_shown = request.form.get("intervention_shown")
-        print(intervention_shown)
-        try:
-            user_sheet = sheet.worksheet(user_name)
-            user_sheet.append_row([burden_neg, discount_neg, flashcards_learned, intervention_shown])
-            
-        except Exception as e:
-            print(f"Error in /notification route: {e}")
-            return "Internal Server Error", 500
+        # Update worksheet
+        ws = sheet.worksheet(user_name)
+        row = len(ws.get_all_values())
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        ws.update_acell(f"A{row}", request.form.get("burden-negative"))
+        ws.update_acell(f"B{row}", request.form.get("discount-negative"))
+        ws.update_acell(f"C{row}", request.form.get("intervention_shown"))
+        ws.update_acell(f"D{row}", request.form.get("learned"))
+        ws.update_acell(f"L{row}", timestamp)
         
         if request.form.get("choice") == "end":
+            ws.update_acell(f"K{row}", "quit")
             return redirect(url_for('end', user_name=user_name))
         else:
+            ws.update_acell(f"K{row}", "continue")
             return redirect(url_for('review', user_name=user_name))
 
     return render_template("notification.html", user_name=user_name)
@@ -170,8 +210,16 @@ def read_entry_survey(form):
     answers = []
 
     # Skill section
-    for i in range(1, 6): 
+    for i in range(1, 7): 
         question = "skill-{}".format(i)
+        if question in form: 
+            answers.append(form.get(question))
+        else: 
+            answers.append(None)
+    
+    # Burden section
+    for i in range(1, 4): 
+        question = "burden-{}".format(i)
         if question in form: 
             answers.append(form.get(question))
         else: 

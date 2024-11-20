@@ -37,7 +37,7 @@
 <body onload="prepare_page()">
     <script>
         // Set the time delay in milliseconds
-        const delayInMilliseconds = 3 * 60 * 1000; // 3 minutes
+        const delayInMilliseconds = 1 * 60 * 1000; // 3 minutes
         var seconds_remaining = delayInMilliseconds / 1000;
         function quiz_time_over() {
             clearInterval(interval_id);
@@ -51,9 +51,13 @@
             console.log(learned);
             localStorage.setItem("learned", JSON.stringify(learned)); 
             
+            
+            // Update data fields
             var count = learned.length;
             var total = JSON.parse(localStorage.getItem("fronts")).length;
             document.getElementById("remaining").value = total - count;
+            document.getElementById("testing_flashcards_seen").value = flashcard_index + 1;
+            document.getElementById("testing_flashcards_learned").value = num_learned; 
         }
 
         function update_timer() {
@@ -78,28 +82,37 @@
         const unlearned = flashcards['indices'];
         var learned = localStorage.getItem("learned");
         learned = learned ? JSON.parse(learned) : []; // If none, set empty
+        var num_learned = 0; 
 
         function flip() {
           var front = document.getElementById("front");
           var back = document.getElementById("back");
-          if (front.style.display === "none") {
+          var options = document.getElementById("options");
+          if (front.style.display === "none") { // show the front
             front.style.display = "block";
             back.style.display = "none";
+            options.style.display = "none";
           } 
-          else {
+          else { // show the back
             front.style.display = "none";
             back.style.display = "block";
+            options.style.display = "block";
           }
         }
 
         function update_flashcard() {
+            var front = document.getElementById("front");
+            var back = document.getElementById("back");
+            var options = document.getElementById("options");
             document.getElementById("flashcard_index").innerHTML = flashcard_index + 1; 
-            document.getElementById("front").innerHTML = flashcard_fronts[flashcard_index];
-            document.getElementById("back").innerHTML = flashcard_backs[flashcard_index];
+            
             front.innerHTML = flashcard_fronts[flashcard_index];
-            back.innerHTML = flashcard_backs[flashcard_index];
             front.style.display = "block";
+            
+            back.innerHTML = flashcard_backs[flashcard_index];
             back.style.display = "none";
+
+            options.style.display = "none";
         }
         
         function next() {
@@ -120,6 +133,7 @@
             console.log(count, total);
             document.getElementById("progress_bar").style.width = parseInt(count / total * 100) + "%"; 
             document.getElementById("num_learned").innerHTML = learned.length;
+            num_learned++; 
             next();
         }
         
@@ -169,7 +183,7 @@
             <h1 id = "front">word</h1>
             <h1 id = "back" style = "display:none; color:blue;">other word</h1>
         </div>
-        <div style = "width:100%;  margin:0 auto;">
+        <div style = "width:100%;  margin:0 auto; display:none;" id="options">
             <button class = "study-button" onclick="next()">I was wrong</button>
             <button class = "study-button" onclick="right()">I was right</button>
         </div>
@@ -177,6 +191,8 @@
 
     <form action="/quiz?user_name={{ user_name }}" method="post">
         <input type="hidden" id="remaining" name="remaining" value="">
+        <input type="hidden" id="testing_flashcards_seen" name="testing_flashcards_seen" value="">
+        <input type="hidden" id="testing_flashcards_learned" name="testing_flashcards_learned" value="">
         <button type="submit" id="continue" >Next page</button>
     </form>
 </body>

@@ -37,8 +37,7 @@
     <script>
         // Set the time delay in milliseconds
         // change to 3 minutes later
-        const delayInMilliseconds = 0.2 * 60 * 1000; // 3 minutes
-        //const delayInMilliseconds = 4000; // 3 minutes
+        const delayInMilliseconds = 3 * 60 * 1000; // 3 minutes
         var seconds_remaining = delayInMilliseconds / 1000;
 
         function quiz_time_over() {
@@ -49,6 +48,11 @@
             document.getElementById("timer").style.display = 'none';
             document.getElementById("study").style.display = 'none';
             document.body.style.background = "#ff6257";
+
+            // Update data fields
+            document.getElementById("training_flashcards_unique").value = max_flashcard_index + 1;
+            document.getElementById("training_flashcards_seen").value = num_seen;
+            document.getElementById("training_flashcards_flipped").value = num_flipped;
 
         }
 
@@ -78,6 +82,10 @@
         flashcards = get_flashcards();
         const flashcard_fronts = flashcards['fronts']; 
         const flashcard_backs = flashcards['backs'];
+        // Track behaviors
+        var max_flashcard_index = 0; 
+        var num_flipped = 0; 
+        var num_seen = 0; 
 
         function flip() {
           var front = document.getElementById("front");
@@ -90,6 +98,7 @@
             front.style.display = "none";
             back.style.display = "block";
           }
+          num_flipped++; 
         }
 
         function update_flashcard() {
@@ -107,6 +116,11 @@
                 flashcard_index +=1;
                 update_flashcard();
             }
+
+            if(flashcard_index > max_flashcard_index) {
+                max_flashcard_index = flashcard_index; 
+            }
+            num_seen++; 
         }
         
         function backward() {
@@ -114,7 +128,7 @@
                 flashcard_index -=1;
                 update_flashcard();
             }
-
+            num_seen++; 
         }
         
         function increase_flashcards_learned() {
@@ -185,6 +199,9 @@
         </div>
     </div>
     <form action="/review?user_name={{ user_name }}" method="post">
+        <input type="hidden" id="training_flashcards_unique" name="training_flashcards_unique" value="">
+        <input type="hidden" id="training_flashcards_seen" name="training_flashcards_seen" value="">
+        <input type="hidden" id="training_flashcards_flipped" name="training_flashcards_flipped" value="">
         <button type="submit" id="continue">Next page</button>
     </form>
     

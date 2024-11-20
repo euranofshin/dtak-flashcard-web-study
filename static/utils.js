@@ -27,3 +27,11 @@ function set_progress_bar() {
     document.getElementById("num_learned").innerHTML = count;
     document.getElementById("num_total").innerHTML = total;
 }
+        
+function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]]; // Swap elements
+    }
+    return arr; 
+}
