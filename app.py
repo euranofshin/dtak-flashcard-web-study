@@ -107,8 +107,15 @@ def entry():
             ws.append_row([None, None, "Quit!", None])
             return redirect(url_for("end", user_name = user_name))
         elif action == "participate":
-            return redirect(url_for('review', user_name=user_name))
+            return redirect(url_for('tutorial', user_name=user_name))
     return render_template("entry.html", user_name=user_name, intervention = intervention, burden = burden, skill = skill)
+
+@app.route("/tutorial", methods=["GET", "POST"])
+def tutorial():
+    user_name = request.args.get("user_name")
+    if request.method == "POST":
+        return redirect(url_for('review', user_name = user_name))
+    return render_template("tutorial.html", user_name=user_name)
 
 @app.route("/review", methods=["GET", "POST"])
 def review():
@@ -148,15 +155,18 @@ def quiz():
 
         # Redirect
         if remaining <= 0:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            ws.update_acell(f"L{row}", timestamp)
             ws.update_acell(f"K{row}", "complete")
             return redirect(url_for('goal', user_name = user_name))
         else: 
-            return redirect(url_for('notification', user_name=user_name))
+            return redirect(url_for('notification', user_name=user_name, last_round = request.form.get("testing_flashcards_learned")))
     return render_template("quiz.html", user_name=user_name)
 
 @app.route("/notification", methods=["GET", "POST"])
 def notification():
     user_name = request.args.get("user_name")
+    last_round = request.args.get("last_round")
     if request.method == "POST":
         # Update worksheet
         ws = sheet.worksheet(user_name)
@@ -176,7 +186,7 @@ def notification():
             ws.update_acell(f"K{row}", "continue")
             return redirect(url_for('review', user_name=user_name))
 
-    return render_template("notification.html", user_name=user_name)
+    return render_template("notification.html", user_name=user_name, last_round = last_round)
 
 @app.route("/end")
 def end():
@@ -218,7 +228,7 @@ def read_entry_survey(form):
             answers.append(None)
     
     # Burden section
-    for i in range(1, 4): 
+    for i in range(1, 5): 
         question = "burden-{}".format(i)
         if question in form: 
             answers.append(form.get(question))

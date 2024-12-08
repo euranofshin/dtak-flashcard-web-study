@@ -12,14 +12,13 @@
     <script>
 
         function onload() {
-            console.log(fronts);
             // Initialize words
             localStorage.setItem("fronts", JSON.stringify(fronts.slice(0, 100))); 
             localStorage.setItem("backs", JSON.stringify(backs.slice(0, 100))); 
             localStorage.setItem("learned", JSON.stringify([]));
     
             // Initialize interventions
-            let notification_index = Array.from({ length: 15 }, (_, i) => i);
+            let notification_index = Array.from({ length: 10 }, (_, i) => i);
             notification_index = shuffle(notification_index);
             localStorage.setItem("notification_order", JSON.stringify(notification_index));
 

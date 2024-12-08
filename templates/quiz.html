@@ -37,7 +37,7 @@
 <body onload="prepare_page()">
     <script>
         // Set the time delay in milliseconds
-        const delayInMilliseconds = 1 * 60 * 1000; // 3 minutes
+        const delayInMilliseconds = 3 * 60 * 1000; // 3 minutes
         var seconds_remaining = delayInMilliseconds / 1000;
         function quiz_time_over() {
             clearInterval(interval_id);
@@ -76,7 +76,7 @@
 
         // Manage words
         var flashcard_index = 0;
-        flashcards = get_flashcards();
+        flashcards = get_flashcards(false);
         const flashcard_fronts = flashcards['fronts']; 
         const flashcard_backs = flashcards['backs'];
         const unlearned = flashcards['indices'];
@@ -163,7 +163,8 @@
       <div class="progress-bar" id="progress_bar" style="width: 0%;"></div>
     </div>
 
-    <h1 id="prompt">Quiz yourself on as many flashcards as you can for 3 minutes.</h1>
+    <h1>Quiz mode</h1>
+    <h2 id="prompt">Quiz yourself on as many flashcards as you can for 3 minutes.</h2>
     <div id="timer">
     <h2 class="line">Time remaining: </h2>
     <h2 class="line" id="minutes">1</h2>

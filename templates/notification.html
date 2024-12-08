@@ -18,6 +18,39 @@
         }
         #message {
             cursor:pointer;
+            color: #D32F2F; /* Vibrant red text for emphasis */
+            font-weight: bold; /* Bold text */
+            font-family: 'Arial', sans-serif; /* Clean, readable font */
+            margin: 0;
+        }
+
+        #message_container {
+            margin-top:2%;
+            padding:2%;
+            background-color:#FFF9C4;
+            border: 2px solid #FFEB3B; /* Slightly darker yellow border */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow effect */
+            text-align: center; /* Center the message text */
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        /* Keyframes for the fade-in effect */
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        
+        /* Add an icon before the message text */
+        #message::before {
+          content: "💡 "; /* Light bulb icon */
+          font-size: 1.5rem; /* Slightly larger icon */
+          vertical-align: middle;
         }
 
     </style>
@@ -27,69 +60,55 @@
     var num_learned = JSON.parse(localStorage.getItem("learned")).length; 
     var num_sessions = parseInt(localStorage.getItem("visitCount"));
     var words_per_session = parseFloat(num_learned) / parseFloat(num_sessions);
-    var burden_notifications; 
+    const urlParams = new URLSearchParams(window.location.search);
+    var last_round = urlParams.get("last_round");
+    var burden_notifications;
+    var seconds_per_word; 
     if(num_learned > 0) {
-        var seconds_per_word = parseInt(num_sessions * 3 * 60)/parseFloat(num_learned);
-        var words_per_session = seconds_per_word * 3 * 60
+        seconds_per_word = parseInt(num_sessions * 3 * 60)/parseFloat(num_learned);
         burden_notifications = [
-                `You’ve learned ${num_learned} new words since you started studying. Doesn’t it feel great to use your time this way?`,
-                `On average, it takes you ${seconds_per_word} seconds to learn a new word. If you stay another session, you’ll learn ${words_per_session} new words.`,
-                `You know ${num_learned} more words now than you did at the beginning of the hour. Studying is working!`,
-                `You just learned ${num_learned} more words. That’s ${num_learned} fewer words that you have to worry about for the final.`,
-                `Think of how good it feels to have learned ${num_learned} new words. Stay for another session, and you can feel that progress again.`,
-                `By staying for ${num_sessions} sessions, you’ve already shown that you’re more committed than ${Math.min((num_sessions * 10 )+ 50, 99)} percent of participants from the last study.`,
-                `You’ve been learning a new word every ${seconds_per_word} seconds. That’s such a small time commitment to learning something new. Make it again!`,
-                `Chinese is one of the most difficult languages to learn for native English speakers. You’re doing great!`,
-                `By learning Chinese, you’re unlocking the ability to communicate with 16% of the world’s population.`,
-                `Take a second to thank yourself for dedicating time and space to study Chinese. This is worth it.`,
-                `Only about 20% of Americans can speak two or more languages fluently. By studying Chinese, you’re proving yourself the exception.`,
-                `The next session is just a few minutes long! You can spare some time to review some flashcards before moving on with your day.`,
-                `You don’t have to learn all of Chinese at once. Little sessions like this make a difference.`,
-                `Flashcards can be easy. For the next round, focus on learning just ten cards. Ten cards isn’t so bad!`,
-                `You might as well stick around for another session while you’re already here. Make the most of your time!`
+                `Did you know, Chinese is one of the most difficult languages to learn for native English speakers. Think about what an amazing feat you've done by learning ${num_learned} words already. `,
+                `By learning Chinese, you're unlocking the ability to connect with 16% of the world's population. This gives you access to a world of different connections and opportunities.`,
+                `Flashcards can be fun! They're like collecting achievements in a game. Every word you master is a new badge of honor— you've already earned ${num_learned}! `, 
+                `Make it a game: how many cards can you get right in a row? Keep the streak alive and watch your competency soar!`, 
+                `Only about 20% of Americans can speak two or more languages fluently. By studying Chinese, you're proving yourself the exception!`, 
+                `You just learned ${num_learned} new words. That's really amazing.`, 
+                `Compete against yourself: last round, you learned ${last_round} words. Can you do better this next round? What's your strategy?`, 
+                `You've been learning a new word every ${seconds_per_word} seconds. That's such a small price to pay for learning such a hard language. Keep at it!`, 
+                `The next session is just a few minutes long! You can spare some time to review some flashcards before moving on with your day.`, 
+                `Strategy: for the next round, focus on learning just ten cards. Ten cards isn't so bad!`
                 ]
-
     }
     else {
+        seconds_per_word = 30; 
         burden_notifications = [
-                `Keep studying, and you'll feel the thrill of learning a new word.`,
-                `On average, it takes most people 30 seconds to learn a new word. If you stay another session, you’ll learn 36 new words.`,
-                `Stay for another session, and you'll know so many new words than you did before!`,
-                `If you stay another session and learn 10 new words, then that's 10 fewer words that you have to worry about for the final.`,
-                `Stay for another session, and you can feel good about using this time to study.`,
-                `By staying for ${num_sessions} sessions, you’ve already shown that you’re more committed than ${Math.min((num_sessions * 10 )+ 50, 99)} percent of participants from the last study.`,
-                `On average, it takes most people 30 seconds to learn a new word. That’s such a small time commitment to learning something new. Make it again!`,
-                `Chinese is one of the most difficult languages to learn for native English speakers. You’re doing great!`,
-                `By learning Chinese, you’re unlocking the ability to communicate with 16% of the world’s population.`,
-                `Take a second to thank yourself for dedicating time and space to study Chinese. This is worth it.`,
-                `Only about 20% of Americans can speak two or more languages fluently. By studying Chinese, you’re proving yourself the exception.`,
-                `The next session is just a few minutes long! You can spare some time to review some flashcards before moving on with your day.`,
-                `You don’t have to learn all of Chinese at once. Little sessions like this make a difference.`,
-                `Flashcards can be easy. For the next round, focus on learning just ten cards. Ten cards isn’t so bad!`,
-                `You might as well stick around for another session while you’re already here. Make the most of your time!`
+                `Did you know, Chinese is one of the most difficult languages to learn for native English speakers. By staying for another session, you're proving you're capable of taking on big challenges. `,
+                `By learning Chinese, you're unlocking the ability to connect with 16% of the world's population. This gives you access to a world of different connections and opportunities.`,
+                `Flashcards can be fun! They're like collecting achievements in a game. Every word you master is a new badge of honor! `, 
+                `Make it a game: how many cards can you get right in a row? Keep the streak alive and watch your competency soar!`, 
+                `Only about 20% of Americans can speak two or more languages fluently. By studying Chinese, you're proving yourself the exception!`, 
+                `You've stayed for ${num_sessions}. Your commitment to learning Chinese and bettering yourself is amazing.`, 
+                `Compete against yourself: last round, you learned ${last_round} words. Can you do better this next round? What's your strategy?`, 
+                `You've been learning a new word every ${seconds_per_word} seconds. That's such a small price to pay for learning such a hard language. Keep at it!`, 
+                `The next session is just a few minutes long! You can spare some time to review some flashcards before moving on with your day.`, 
+                `Strategy: for the next round, focus on learning just ten cards. Ten cards isn't so bad!`
                 ]
+        }
 
-    }
     const discount_notifications = [
-            "Take a second to picture yourself learning the last flashcard. How will it feel to see the unlearned pile be empty and to know you finished the entire deck?",
-            "Imagine the thrill of understanding a Chinese movie without subtitles—each flashcard you study now is one step closer to making that a reality.",
-            "Visualize acing your Chinese final in a couple of weeks. Choosing to stay another session will help you get there.",
-            "Picture a future trip to China where you can chat effortlessly with the locals. Today’s study session is building the skills you’ll use on that journey",
-            "Picture yourself walking into a restaurant and being able to read a Chinese menu without help. Every extra flashcard today builds up to that experience",
-            "Would you rather stay for one more round and feel the happiness of having accomplished something tough today or leave right now without the feeling?",
-            "Stay and study a few more flashcards, and you’ll walk away with new words learned. If you stop now, that progress will have to wait.",
-            "You’ve already carved out time to be here. If you leave now, you’ll miss out on all of the words you could have learned. ",
-            "You’re on a roll! While you’re already in the flow, keep going—pausing now means you’ll just have to get back into it later.",
-            "Studying just a bit longer lets you walk away with more skills—taking a break now means leaving that knowledge behind for another day ",
-            "Just a few extra minutes every session can make a big difference. Staying for one more round today means less to catch up on tomorrow",
-            "For the next session, focus on learning 10 new cards. It might seem small, but if you keep it up, you’ll know hundreds of words in no time! ",
-            "Think of today as one step in a longer journey. Staying just a bit longer each time you study can mean mastering thousands of new words and phrases.",
-            "Unless you’re planning to read all the ancient Chinese classics, you won’t need much more than 2,000 characters to be considered literate. Learning 100 words today puts you 5% closer to literacy! ",
-            `On average, it takes you ${seconds_per_word} seconds to learn a new word. Imagine how many words you can learn by finishing out the hour!`
+                `Take a second to picture yourself learning the last flashcard. How will it feel to see the unlearned pile be empty and to know you finished the entire deck? `, 
+                `Visualize filling up the progress bar to 100%. Choosing to stay another session will help you get there.`, 
+                `Picture yourself walking out of this room knowing you learned every flashcard that was asked of you. Now imagine walking out of this room knowing you gave up. Which would you rather feel?`, 
+                `You have a choice: stay until the end of the study to learn about yourself or quit now and lose out on the insight.`, 
+                `Think about how satisfying it will feel to walk out of here with a wealth of new vocabulary. You can do your future self that favor now.`, 
+                `Think about it-- if you learn all of your flashcards, you get to take the exit survey early. You'll have studied Chinese and have saved on time. Talk about efficiency!`, 
+                `While you’re already in the flow, keep going— stopping now means you'll have to restart the hard work from scratch tomorrow.`, 
+                `Staying another session means you're closer to learning about your study style. Walk away now and you'll lose the chance to learn about yourself.`, 
+                `To read modern Chinese, you only need around 2,000 characters to be considered literate. Learning 100 words today puts you 5% closer to literacy!`, 
+            `On average, it takes you ${seconds_per_word}  seconds to learn a new word. Imagine how many words you can learn by finishing out the hour!`
         ]; 
     const no_notifications =Array(15).fill(""); 
     const notifications = [no_notifications, burden_notifications, discount_notifications];
-    
 
     function displayRandomWord() {
         var notification_order = JSON.parse(localStorage.getItem("notification_order"));
@@ -99,19 +118,26 @@
             var randomNumber = notification_order[num_sessions]; 
         }
         else {
-            var randomNumber = Math.floor(Math.random() * 14) + 1;
+            var randomNumber = Math.floor(Math.random() * (notification_order.length - 1)) + 1;
         }
 
         const message = notifications[intervention][randomNumber];
-        console.log(notification_order);
         console.log(intervention + " " + randomNumber); 
         console.log(notifications);
-        console.log(num_sessions + "\n" + message);
+        /*
+        var show = "";
+        for(var i=0; i<notification_order.length; i++) {
+                show +=("\n" + notifications[intervention][i])
+            }
+        document.getElementById("message").innerHTML = show;
+    */
         document.getElementById("message").innerHTML = message;
         document.getElementById("intervention_shown").value = message; // Set the value of the hidden input
         document.getElementById("learned").value = JSON.parse(localStorage.getItem("learned")).length;
 
         if(intervention == 0) { // No message to read
+            document.getElementById("message_container").style.display = "none"; 
+            document.getElementById("message_header").style.display = "none"; 
             reveal();
         }
     }
@@ -123,10 +149,6 @@
         set_progress_bar(); 
     };
 
-    // Event listener for button click
-    document.getElementById("nextButton").addEventListener("click", function() {
-        document.getElementById("notificationForm").submit();
-    });
         
     function reveal() {
           document.getElementById("notificationForm").style.display = "block";
@@ -140,18 +162,24 @@
     <progress class="line" id="progress_bar" value="32" max="100" style="width:65%;"/>
 </div>
 -->
-<h3 class="progress-label">Progress:</h3>
-<h3 class="progress-label" id="num_learned"></h3>
-<h3 class="progress-label">/</h3>
-<h3 class="progress-label" id="num_total"></h3>
-<h3 class="progress-label"> words learned</h3>
-<div class="progress-container">
-  <div class="progress-bar" id="progress_bar" style="width: 0%;"></div>
-</div>
 
 
-<div style="text-align:left; padding-left:20%; width:60%; ">
-    <h2 id="message" onclick="reveal()" style="color:#8a170f;"></h2>
+<div style="text-align:left; padding-left:20%; width:60%; margin-top:5%;">
+    <!-- Progress bar --->
+    <h1>Your progress</h1>
+    <h3 class="progress-label" id="num_learned"></h3>
+    <h3 class="progress-label">/</h3>
+    <h3 class="progress-label" id="num_total"></h3>
+    <h3 class="progress-label"> words learned</h3>
+    <div class="progress-container">
+      <div class="progress-bar" id="progress_bar" style="width: 0%;"></div>
+    </div>
+    
+    <h1 id="message_header">Your message</h1>
+    <div id="message_container">
+        <h2 id="message" onclick="reveal()"></h2>
+    </div>
+
     <h3 id="instructions">Click the message above to move on.</h3>
     <form id="notificationForm" method="POST" action="/notification?user_name={{ user_name }}" style="display:none;">
          <input type="hidden" id="intervention_shown" name="intervention_shown" value="">
@@ -226,7 +254,7 @@
          <br>
          
          <h2>Would you like to end or continue the study?</h2>
-         <button type="submit" name="choice" value="end">End</button>
+         <button type="submit" name="choice" value="end" style="margin-right:20px;">End</button>
          <button type="submit" name="choice" value="continue">Continue</button>
      </form>
 </div>
